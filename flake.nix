@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations.shunya = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.shunya-dsktp = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         # Import the previous configuration.nix we used,
