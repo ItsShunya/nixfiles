@@ -2,7 +2,7 @@
   description = "Main config NixOS flake";
 
   inputs = {
-    # NixOS official package source, using the nixos-24.05 branch.
+    # NixOS official package source..
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     # Home Manager for managing user configuration.
@@ -16,10 +16,20 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = {
+    self, 
+    nixpkgs, 
+    home-manager, 
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+  in {
+    # NixOS configuration entrypoint, available through
+    # 'nixos-rebuild --flake .#name'.
     nixosConfigurations = {
       shunya-dsktp = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {inherit inputs outputs;};
         modules = [
           ./nixos/configuration.nix
 
@@ -28,17 +38,18 @@
                 settings.experimental-features = [ "nix-command" "flakes" ];
              };
           }
+        ];
+      };
+    };
 
-          # Make home-manager a module of nixos, so that its configuration
-          # configuration will be deployed automatically when rebuilding nixos.
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.shunya = import ./home/home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-          }
+    # Standalone home-manager configuration, available through
+    # 'home-manager --flake .#name@hostname'.
+    homeConfigurations = {
+      "shunya@shunya-dsktp" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [
+          ./home/home.nix
         ];
       };
     };
