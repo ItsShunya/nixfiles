@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # TODO please change the username & home directory to your own
-  home.username = "shunya";
-  home.homeDirectory = "/home/shunya";
-
   # link the configuration file in current directory to the specified location in home directory
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
 
@@ -94,13 +90,6 @@
     pciutils # lspci
     usbutils # lsusb
   ];
-
-  # basic configuration of git, please change to your own
-  programs.git = {
-    enable = true;
-    userName = "Victor Luque";
-    userEmail = "luque.viictor@gmail.com";
-  };
 
   # starship - an customizable prompt for any shell
   programs.starship = {
