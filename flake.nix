@@ -49,7 +49,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [
-          ./home/home.nix
+          ./home/shunya-dsktp/home.nix
         ];
       };
     };
