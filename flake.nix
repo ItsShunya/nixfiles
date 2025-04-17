@@ -31,7 +31,7 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [
-          ./configuration.nix
+          ./nixos/configuration.nix
 
           {
              nix = {
