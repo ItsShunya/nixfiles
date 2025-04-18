@@ -16,41 +16,31 @@
     };
   };
 
-  outputs = {
-    self, 
-    nixpkgs, 
-    home-manager, 
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
     # NixOS configuration entrypoint, available through
     # 'nixos-rebuild --flake .#name'.
     nixosConfigurations = {
       shunya-dsktp = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs;};
         modules = [
-          ./nixos/configuration.nix
+          ./hosts/shunya-dsktp/configuration.nix
 
           {
              nix = {
                 settings.experimental-features = [ "nix-command" "flakes" ];
              };
           }
-        ];
-      };
-    };
+          
+	  # Standalone home-manager configuration, available through
+          # 'home-manager --flake .#name@hostname'.
+          home-manager.nixosModules.home-manager
+	  {
+            home-manager.useGlobalPkgs = true;
+	    home-manager.useUserPackages = true;
 
-    # Standalone home-manager configuration, available through
-    # 'home-manager --flake .#name@hostname'.
-    homeConfigurations = {
-      "shunya@shunya-dsktp" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          ./home/shunya-dsktp/home.nix
-        ];
+	    home-manager.users.shunya = import ./home/shunya-dsktp/home.nix;
+          }
+       ];
       };
     };
   };
