@@ -2,14 +2,14 @@
 
 {
    # Bootloader.
-   boot.loader.systemd-boot.enable = true;
-   boot.loader.efi.canTouchEfiVariables = true;
+   boot.loader = {
+      systemd-boot.enable = true;
+      systemd-boot.configurationLimit = 5;
+      efi.canTouchEfiVariables = true;
+   };
 
    # Enable networking
    networking.networkmanager.enable = true;
-
-   # Enable flakes.
-   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
    # Set your time zone.
    time.timeZone = "Europe/Madrid";
@@ -51,10 +51,11 @@
    # Install Firefox.
    programs.firefox.enable = true;
 
-   # Install Zsh.
-   programs.zsh.enable = true;
-  
    # Set Zsh as default shell.
+   programs.zsh.enable = true;
+   environment.shells = with pkgs; [ 
+      zsh 
+   ];
    users.defaultUserShell = pkgs.zsh;
 
    # Allow unfree packages
@@ -67,6 +68,37 @@
       wget
       wezterm
       neovim
+      python3
    ];
+
+   nix = {
+
+     settings = {
+       experimental-features = [ "nix-command" "flakes" ]; # Enable flakes.
+       trusted-users = [ "root" "@wheel" ];
+       warn-dirty = false;
+
+       # Optimize storage.
+       # You can also manually optimize the store via:
+       #    nix-store --optimise
+       # Refer to the following link for more details:
+       # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
+       auto-optimise-store = true;
+     };
+
+     # Perform garbage collection weekly to maintain low disk usage.
+     gc = {
+       automatic = true;
+       dates = "weekly";
+       options = "--delete-older-than 1w";
+     };
+
+     optimise.automatic = true;
+  };
+
+  system = {
+    # Avoid symlink of configuration.nix.
+    copySystemConfiguration = false;
+  };
 
 }

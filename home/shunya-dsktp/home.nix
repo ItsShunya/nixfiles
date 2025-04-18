@@ -14,5 +14,23 @@
     enable = true;
     userName = "Victor Luque";
     userEmail = "luque.viictor@gmail.com";
-  };  
+  };
+
+  home.packages = with pkgs; [
+
+    # Dev tools.
+    gitkraken
+
+    # Graphics.
+    krita
+  ];
+
+  # VSCode config and extensions.
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      dracula-theme.theme-dracula
+    ];
+  };
+
 }
