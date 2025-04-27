@@ -66,8 +66,6 @@
    environment.systemPackages = with pkgs; [
       git     
       wget
-      wezterm
-      neovim
       python3
    ];
 

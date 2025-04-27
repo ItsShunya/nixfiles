@@ -25,20 +25,14 @@
         modules = [
           ./hosts/shunya-dsktp/configuration.nix
 
-          {
-             nix = {
-                settings.experimental-features = [ "nix-command" "flakes" ];
-             };
-          }
-          
-	  # Standalone home-manager configuration, available through
+	        # Standalone home-manager configuration, available through
           # 'home-manager --flake .#name@hostname'.
           home-manager.nixosModules.home-manager
-	  {
+	        {
             home-manager.useGlobalPkgs = true;
-	    home-manager.useUserPackages = true;
+	          home-manager.useUserPackages = true;
 
-	    home-manager.users.shunya = import ./home/shunya-dsktp/home.nix;
+	          home-manager.users.shunya = import ./home/shunya-dsktp/home.nix;
           }
        ];
       };

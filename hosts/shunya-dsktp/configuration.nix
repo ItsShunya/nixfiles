@@ -40,7 +40,10 @@
     extraGroups = [ "networkmanager" "wheel" ];
     useDefaultShell = true;
     packages = with pkgs; [
-    #  thunderbird
+      alacritty
+      neovim
+      nerdfonts
+      dmenu
     ];
   };
  
