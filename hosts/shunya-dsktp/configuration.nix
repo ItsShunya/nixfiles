@@ -17,18 +17,55 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  services = {
+    xserver = {
+      enable = true;
+
+      xkb = {
+        layout = "es";
+        variant = "";
+      };
+      
+      windowManager.i3 = {
+        enable = true;
+        extraPackages = with pkgs; [
+          i3status
+        ];
+      };
+
+      desktopManager = {
+        xterm.enable = false;
+        xfce = {
+          enable = true;
+          noDesktop = true;
+          enableXfwm = false;
+        };
+      };
+
+      displayManager = {
+        lightdm.enable = true;
+        defaultSession = "xfce+i3";
+      };
+    };
+
+    gvfs.enable = true;
+    gnome.gnome-keyring.enable = true;  
+  };
+
+  environment.variables.TERMINAL = "alacritty";
+
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  #services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "es";
-    variant = "";
-  };
+  #services.xserver.xkb = {
+  #  layout = "es";
+  #  variant = "";
+  #};
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -43,10 +80,41 @@
       alacritty
       neovim
       nerdfonts
+      # The following modules are for i3.
       dmenu
+      gnome.gnome-keyring
+      polkit_gnome
+      clipmenu
     ];
   };
  
+  programs = {
+    thunar.enable = true;
+    dconf.enable = true;
+  };
+
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
+
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart =
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   # Install Hyprland.
   # programs.hyprland.enable = true;
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";

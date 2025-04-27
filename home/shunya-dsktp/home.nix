@@ -9,6 +9,13 @@
   home.username = "shunya";
   home.homeDirectory = "/home/shunya";
 
+  # Environment
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    BROWSER = "firefox";
+    TERMINAL = "alacritty";
+  };
+
   # Basic configuration of git.
   programs.git = {
     enable = true;
@@ -17,7 +24,6 @@
   };
 
   home.packages = with pkgs; [
-
     # Dev tools.
     gitkraken
 
