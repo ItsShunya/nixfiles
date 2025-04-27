@@ -5,6 +5,8 @@
     ../shared
   ];
 
+  # --- USER ---
+
   # Home-manager user details.
   home.username = "shunya";
   home.homeDirectory = "/home/shunya";
@@ -16,12 +18,8 @@
     TERMINAL = "alacritty";
   };
 
-  # Basic configuration of git.
-  programs.git = {
-    enable = true;
-    userName = "Victor Luque";
-    userEmail = "luque.viictor@gmail.com";
-  };
+
+  # --- PACKAGES ---
 
   home.packages = with pkgs; [
     # Dev tools.
@@ -30,6 +28,16 @@
     # Graphics.
     krita
   ];
+
+
+  # --- PROGRAMS ---
+
+  # Basic configuration of git.
+  programs.git = {
+    enable = true;
+    userName = "Victor Luque";
+    userEmail = "luque.viictor@gmail.com";
+  };
 
   # VSCode config and extensions.
   programs.vscode = {

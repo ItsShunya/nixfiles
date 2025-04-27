@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+
+  # --- EXTERNAL CONFIGS ---
+
   # link the configuration file in current directory to the specified location in home directory
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
 
@@ -16,11 +19,8 @@
   #     xxx
   # '';
 
-  # set cursor size and dpi for 4k monitor
-  # xresources.properties = {
-  #   "Xcursor.size" = 16;
-  #   "Xft.dpi" = 172;
-  # };
+
+  # --- PACKAGES ---
 
   # Packages that should be installed to all user profiles.
   home.packages = with pkgs; [
@@ -53,12 +53,12 @@
     nix-output-monitor 	# `nom` works like `nix` with more detailed output.
 
     # Productivity
-    glow 		# Markdown previewer in terminal.
+    glow 		  # Markdown previewer in terminal.
 
     # System call monitoring.
     strace 		# System call monitoring.
     ltrace 		# Library call monitoring.
-    lsof 		# List open files.
+    lsof 		  # List open files.
 
     # System tools.
     sysstat
@@ -67,17 +67,8 @@
     usbutils 		# `lsusb`
   ];
 
-  # starship - an customizable prompt for any shell
-  programs.starship = {
-    enable = true;
-    # custom settings
-    settings = {
-      add_newline = false;
-      aws.disabled = true;
-      gcloud.disabled = true;
-      line_break.disabled = true;
-    };
-  };
+
+  # --- PROGRAMS ---
 
   programs.bash = {
     enable = true;
