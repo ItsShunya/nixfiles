@@ -19,7 +19,7 @@
       shunya-dsktp = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hosts/shunya-dsktp/configuration.nix
+          ./hosts/desktop/shunya-dsktp/configuration.nix
 
 	        # Standalone home-manager configuration, available through
           # 'home-manager --flake .#name@hostname'.
@@ -27,7 +27,7 @@
 	        {
             home-manager.useGlobalPkgs = true;
 	          home-manager.useUserPackages = true;
-	          home-manager.users.shunya = import ./home/shunya-dsktp/home.nix;
+	          home-manager.users.shunya = import ./modules/home/users/shunya-dsktp/home.nix;
           }
        ];
       };
