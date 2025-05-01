@@ -20,7 +20,6 @@
       neovim
       nerdfonts
       # The following modules are for i3.
-      dmenu
       gnome.gnome-keyring
       polkit_gnome
       clipmenu
@@ -29,6 +28,11 @@
 
   networking.hostName = "shunya-dsktp";
 
+  fonts.packages = with pkgs; [
+    font-awesome
+    nerdfonts
+    (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+    ];
 
   # --- SERVICES ---
 
@@ -47,9 +51,6 @@
       # Window manager --> i3wm.
       windowManager.i3 = {
         enable = true;
-        extraPackages = with pkgs; [
-          i3status
-        ];
       };
 
       # Keep Xfce active (no GUI) for tools.

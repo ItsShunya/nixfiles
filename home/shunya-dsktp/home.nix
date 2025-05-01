@@ -3,6 +3,7 @@
 {
   imports = [
     ../shared
+    ./i3wm/i3wm.nix
   ];
 
   # --- USER ---
