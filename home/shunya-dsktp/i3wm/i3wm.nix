@@ -11,25 +11,26 @@ in {
       fonts = ["DejaVu Sans Mono, FontAwesome 6"];
 
       keybindings = lib.mkOptionDefault {
-        "${mod}+p" = "exec ${pkgs.dmenu}/bin/dmenu_run";
+        "${mod}+d" = "exec ${pkgs.dmenu}/bin/dmenu_run";
+        "${mod}+p" = "exec ${pkgs.rofi}/bin/rofi";
         "${mod}+x" = "exec sh -c '${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png'";
         "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
 
         # Focus
-        "${mod}+j" = "focus left";
-        "${mod}+k" = "focus down";
-        "${mod}+l" = "focus up";
-        "${mod}+semicolon" = "focus right";
+        "${mod}+Left" = "focus left";
+        "${mod}+Down" = "focus down";
+        "${mod}+Up" = "focus up";
+        "${mod}+Right" = "focus right";
 
         # Move
-        "${mod}+Shift+j" = "move left";
-        "${mod}+Shift+k" = "move down";
-        "${mod}+Shift+l" = "move up";
-        "${mod}+Shift+semicolon" = "move right";
+        "${mod}+Shift+Left" = "move left";
+        "${mod}+Shift+Down" = "move down";
+        "${mod}+Shift+Up" = "move up";
+        "${mod}+Shift+Right" = "move right";
 
-        # My multi monitor setup
-        "${mod}+m" = "move workspace to output DP-2";
-        "${mod}+Shift+m" = "move workspace to output DP-5";
+        # My dual monitor setup
+        "${mod}+Control+Right" = "move workspace to output right";
+        "${mod}+Control+Left" = "move workspace to output left";
       };
 
       bars = [

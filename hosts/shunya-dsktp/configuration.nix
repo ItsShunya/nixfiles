@@ -49,6 +49,7 @@
       };
       
       # Window manager --> i3wm.
+      # Configured in Home Manager profile.
       windowManager.i3 = {
         enable = true;
       };
@@ -81,7 +82,7 @@
 
   programs = {
     thunar.enable = true;
-    dconf.enable = true;
+    dconf.enable = true;  # Necessary to save some configs after reboot.
   };
 
   security = {
