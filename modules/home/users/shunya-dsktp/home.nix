@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../shared
-    ./i3wm/i3wm.nix
+    ../../core
+    ../../optional/desktop/i3
   ];
 
   # --- USER ---
