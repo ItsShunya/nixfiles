@@ -4,8 +4,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../shared
-      ../../../modules/nixos/core/bootloader
+      ../../../modules/common
     ];
 
   # --- USER ---
@@ -42,12 +41,6 @@
     # Window System. 
     xserver = {
       enable = true;
-
-      # Keyboard config.
-      xkb = {
-        layout = "es";
-        variant = "";
-      };
       
       # Window manager --> i3wm.
       # Configured in Home Manager profile.

@@ -3,6 +3,8 @@
 {
 
   imports = [
-    ./zsh.nix
+    ./i18n.nix
+    ./network.nix
   ];
+
 }

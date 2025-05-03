@@ -4,8 +4,10 @@
 
   imports = [
     ./bootloader
+    ./hardware
     ./nix
     ./shell
+    ./system
   ];
 
 }
