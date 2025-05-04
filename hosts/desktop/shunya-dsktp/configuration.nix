@@ -16,7 +16,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
     useDefaultShell = true;
     packages = with pkgs; [
-      alacritty
       neovim
       nerdfonts
       # The following modules are for i3.

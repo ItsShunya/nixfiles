@@ -4,6 +4,7 @@
   imports = [
     ../../core
     ../../optional/desktop/i3
+    ../../optional/programs/alacritty
     ./wallpaper.nix
   ];
 
