@@ -4,6 +4,7 @@
   imports = [
     ../../core
     ../../optional/desktop/i3
+    ./wallpaper.nix
   ];
 
   # --- USER ---
