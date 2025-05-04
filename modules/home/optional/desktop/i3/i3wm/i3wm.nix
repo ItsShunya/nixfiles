@@ -5,6 +5,7 @@ let
 in {
   xsession.windowManager.i3 = {
     enable = true;
+
     config = {
       modifier = mod;
 
@@ -46,6 +47,22 @@ in {
         inner = 8;
         outer = 8;
       };
+
+      startup = [
+        { 
+          command = "feh --no-fehbg --bg-scale ~/.wallpaper1 --bg-scale ~/.wallpaper2"; 
+          always = true;
+          notification = false;
+        } {
+          command = "firefox";
+        } {
+          command = "picom -f &";
+        }
+      ];
+    };
+  };
+
+  programs.feh.enable = true;
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
   # home.file.".config/i3/scripts" = {
