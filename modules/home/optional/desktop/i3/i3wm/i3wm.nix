@@ -35,15 +35,17 @@ in {
 
       bars = [
         {
-          position = "bottom";
+          position = "top";
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${../i3status/i3status-rust.toml}";
         }
       ];
-    };
-  };
 
-  # link the configuration file in current directory to the specified location in home directory
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
+      gaps = {
+        smartBorders = "on";
+        smartGaps = true;
+        inner = 8;
+        outer = 8;
+      };
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
   # home.file.".config/i3/scripts" = {
