@@ -5,11 +5,69 @@ let
 in {
   xsession.windowManager.i3 = {
     enable = true;
+    
+    package = pkgs.i3-gaps;
 
     config = {
       modifier = mod;
 
       fonts = ["DejaVu Sans Mono, FontAwesome 6"];
+
+      terminal = "alacritty";
+
+      workspaceLayout = "tabbed";
+      
+      window = {
+        titlebar = false;
+        border = 3;
+        hideEdgeBorders = "smart";
+      };
+
+      floating = {
+        border = 2;
+      };
+      
+      bars = [
+        {
+          position = "top";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${../i3status/i3status-rust.toml}";
+        }
+      ];
+
+      focus = {
+        followMouse = true;
+        wrapping = "force";
+      };
+
+      gaps = {
+        bottom = 5;
+        horizontal = 5;
+        inner = 5;
+        left = 5;
+        outer = 5;
+        right = 5;
+        top = 5;
+        vertical = 5;
+        smartBorders = "no_gaps";
+        smartGaps = true;
+      };
+
+      startup = [
+        {
+          command = "firefox";
+        } 
+        {
+          command = "picom -f &";
+          always = true;
+          notification = false;
+        } 
+        {
+          # This requires a delay otherwise the resolution is not set correctly by feh.
+          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2"; 
+          always = true;
+          notification = false;
+        }
+      ];
 
       keybindings = lib.mkOptionDefault {
         "${mod}+d" = "exec ${pkgs.dmenu}/bin/dmenu_run";
@@ -33,32 +91,6 @@ in {
         "${mod}+Control+Right" = "move workspace to output right";
         "${mod}+Control+Left" = "move workspace to output left";
       };
-
-      bars = [
-        {
-          position = "top";
-          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${../i3status/i3status-rust.toml}";
-        }
-      ];
-
-      gaps = {
-        smartBorders = "on";
-        smartGaps = true;
-        inner = 8;
-        outer = 8;
-      };
-
-      startup = [
-        { 
-          command = "feh --no-fehbg --bg-scale ~/.wallpaper1 --bg-scale ~/.wallpaper2"; 
-          always = true;
-          notification = false;
-        } {
-          command = "firefox";
-        } {
-          command = "picom -f &";
-        }
-      ];
     };
   };
 
