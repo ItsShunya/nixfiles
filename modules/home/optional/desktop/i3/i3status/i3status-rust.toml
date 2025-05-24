@@ -7,7 +7,7 @@ idle_bg = "#123456"
 idle_fg = "#abcdef"
 
 [icons]
-icons = "awesome4"
+icons = "awesome5"
 [icons.overrides]
 bat = ["|E|", "|_|", "|=|", "|F|"]
 bat_charging = "|^| "
@@ -43,3 +43,34 @@ cmd = "pavucontrol"
 block = "time"
 interval = 5
 format = " $timestamp.datetime(f:'%a %d/%m %R') "
+
+[[block]]
+block = "battery"
+if_command = "test -e /sys/class/power_supply/BAT0"
+[block.theme_overrides]
+idle_bg = "#D8DEE9"
+idle_fg = "#A0A6B2"
+
+[[block]]
+block = "custom"
+command = "whoami"
+interval = "once"
+[block.theme_overrides]
+idle_bg = "#A0A6B2"
+idle_fg = "#D8DEE9"
+
+[[block]]
+block = "custom"
+command = "cat /etc/hostname"
+interval = "once"
+[block.theme_overrides]
+idle_bg = "#A0A6B2"
+idle_fg = "#D8DEE9"
+
+[[block]]
+block = "custom"
+command = "echo `uname` `uname -r | tr - . | cut -d. -f1-2`"
+interval = "once"
+[block.theme_overrides]
+idle_bg = "#A0A6B2"
+idle_fg = "#D8DEE9"
