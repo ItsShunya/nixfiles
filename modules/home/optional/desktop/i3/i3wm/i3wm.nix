@@ -15,8 +15,6 @@ in {
 
       terminal = "alacritty";
 
-      workspaceLayout = "tabbed";
-      
       window = {
         titlebar = false;
         border = 3;
@@ -28,10 +26,10 @@ in {
       };
       
       bars = [
-        {
-          position = "top";
-          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${../i3status/i3status-rust.toml}";
-        }
+        #{
+        #  position = "top";
+        #  statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${../i3status/i3status-rust.toml}";
+        #}
       ];
 
       focus = {
@@ -93,8 +91,6 @@ in {
       };
     };
   };
-
-  programs.feh.enable = true;
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
   # home.file.".config/i3/scripts" = {
