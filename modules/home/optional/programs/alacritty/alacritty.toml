@@ -19,10 +19,10 @@
 TERM                  = "xterm-256color"
 
 [window]
-#dimensions            = { columns = 0, lines = 0 }
+dimensions            = { columns = 90, lines = 25 }
 #position              = { x = 0, y = 0 }
 padding               = { x = 2, y = 2 }
-#dynamic_padding       = true
+dynamic_padding       = true
 decorations           = "Buttonless"
 opacity               = 1
 blur                  = true
