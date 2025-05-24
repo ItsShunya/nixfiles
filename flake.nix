@@ -31,6 +31,14 @@
           }
        ];
       };
+
+      nb250-10n = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/server/nb250-10n/configuration.nix
+
+        ];
+      };
     };
   };
 }
