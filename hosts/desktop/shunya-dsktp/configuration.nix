@@ -30,7 +30,7 @@
   fonts.packages = with pkgs; [
     font-awesome
     nerdfonts
-    (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+    #(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" "Iosevka" "FantasqueSansMono"]; })
     ];
 
   # --- SERVICES ---
