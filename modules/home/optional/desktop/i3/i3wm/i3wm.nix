@@ -55,11 +55,6 @@ in {
           command = "firefox";
         } 
         {
-          command = "picom -f &";
-          always = true;
-          notification = false;
-        } 
-        {
           # This requires a delay otherwise the resolution is not set correctly by feh.
           command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2"; 
           always = true;

@@ -16,7 +16,13 @@
     shadowOpacity = 0.75;
 
     settings = {
-      corner-radius = 10;
+      corner-radius = 0;
     };
   };
+
+  xsession.windowManager.i3.config.startup = [{
+    command = "systemctl --user restart picom";
+    always = true;
+    notification = false;
+  }];
 }
