@@ -3,6 +3,7 @@
 {
   imports = [
     ../../core
+    ../../optional/desktop/polybar
     ../../optional/desktop/i3
     ../../optional/programs/alacritty
     ../../optional/programs/picom
