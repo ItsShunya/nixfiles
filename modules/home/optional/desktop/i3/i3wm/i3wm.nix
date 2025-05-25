@@ -1,17 +1,23 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let 
+let
   mod = "Mod4";
-in {
+in
+{
   xsession.windowManager.i3 = {
     enable = true;
-    
+
     package = pkgs.i3-gaps;
 
     config = {
       modifier = mod;
 
-      fonts = ["DejaVu Sans Mono, FontAwesome 6"];
+      fonts = [ "DejaVu Sans Mono, FontAwesome 6" ];
 
       terminal = "alacritty";
 
@@ -24,7 +30,7 @@ in {
       floating = {
         border = 2;
       };
-      
+
       bars = [
         #{
         #  position = "top";
@@ -53,10 +59,10 @@ in {
       startup = [
         {
           command = "firefox";
-        } 
+        }
         {
           # This requires a delay otherwise the resolution is not set correctly by feh.
-          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2"; 
+          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2";
           always = true;
           notification = false;
         }
@@ -66,7 +72,8 @@ in {
         "${mod}+d" = "exec ${pkgs.dmenu}/bin/dmenu_run";
         "${mod}+p" = "exec ${pkgs.rofi}/bin/rofi";
         "${mod}+x" = "exec sh -c '${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png'";
-        "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
+        "${mod}+Shift+x" =
+          "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
 
         # Focus
         "${mod}+Left" = "focus left";

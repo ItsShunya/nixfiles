@@ -5,8 +5,14 @@
   nix = {
 
     settings = {
-      experimental-features = [ "nix-command" "flakes" ]; # Enable flakes.
-      trusted-users = [ "root" "@wheel" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ]; # Enable flakes.
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
       warn-dirty = false;
 
       # Optimize storage.

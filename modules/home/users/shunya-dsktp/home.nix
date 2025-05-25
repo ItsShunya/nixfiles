@@ -24,7 +24,6 @@
     BROWSER = "firefox";
   };
 
-
   # --- PACKAGES ---
 
   home.packages = with pkgs; [
@@ -33,8 +32,9 @@
 
     # Graphics.
     krita
-  ];
 
+    nixfmt-rfc-style
+  ];
 
   # --- PROGRAMS ---
 

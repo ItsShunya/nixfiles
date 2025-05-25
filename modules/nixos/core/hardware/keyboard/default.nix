@@ -3,7 +3,7 @@
 {
 
   # Keyboard config.
-  services.xserver.xkb  = {
+  services.xserver.xkb = {
     layout = "es";
     variant = "";
   };
@@ -12,4 +12,3 @@
   console.keyMap = "es";
 
 }
-

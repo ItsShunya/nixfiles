@@ -9,7 +9,6 @@
   #     xxx
   # '';
 
-
   # --- PACKAGES ---
 
   # Packages that should be installed to all user profiles.
@@ -24,10 +23,10 @@
     xz
 
     # Networking.
-    mtr       		# Network diagnostic tool.
-    dnsutils  		# `dig` + `nslookup`.
-    nmap      		# Utility for network discovery and security auditing.
-    ipcalc    		# Calculator for the IPv4/v6 addresses.
+    mtr # Network diagnostic tool.
+    dnsutils # `dig` + `nslookup`.
+    nmap # Utility for network discovery and security auditing.
+    ipcalc # Calculator for the IPv4/v6 addresses.
 
     # Misc.
     file
@@ -40,23 +39,22 @@
     gnupg
 
     # Nix.
-    nix-output-monitor 	# `nom` works like `nix` with more detailed output.
+    nix-output-monitor # `nom` works like `nix` with more detailed output.
 
     # Productivity
-    glow 		  # Markdown previewer in terminal.
+    glow # Markdown previewer in terminal.
 
     # System call monitoring.
-    strace 		# System call monitoring.
-    ltrace 		# Library call monitoring.
-    lsof 		  # List open files.
+    strace # System call monitoring.
+    ltrace # Library call monitoring.
+    lsof # List open files.
 
     # System tools.
     sysstat
     ethtool
-    pciutils 		# `lspci`
-    usbutils 		# `lsusb`
+    pciutils # `lspci`
+    usbutils # `lsusb`
   ];
-
 
   # --- PROGRAMS ---
 

@@ -9,7 +9,7 @@
           format-volume-foreground = "#BF616A"; # base 0B
           label-volume = "%percentage%%";
           label-muted = "󰝟 ---";
-          label-muted-foreground = "#4C566A"; #base 03
+          label-muted-foreground = "#4C566A"; # base 03
           ramp-volume-0 = "";
           ramp-volume-1 = "󰕾";
           ramp-volume-2 = "";

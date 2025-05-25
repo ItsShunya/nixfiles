@@ -22,9 +22,11 @@
     };
   };
 
-  xsession.windowManager.i3.config.startup = [{
-    command = "pkill polybar; polybar -r main";
-    always = true;
-    notification = false;
-  }];
+  xsession.windowManager.i3.config.startup = [
+    {
+      command = "pkill polybar; polybar -r main";
+      always = true;
+      notification = false;
+    }
+  ];
 }

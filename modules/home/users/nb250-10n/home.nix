@@ -17,13 +17,11 @@
     EDITOR = "nvim";
   };
 
-
   # --- PACKAGES ---
 
   home.packages = with pkgs; [
 
   ];
-
 
   # --- PROGRAMS ---
 

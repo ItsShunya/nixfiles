@@ -6,12 +6,12 @@
     backend = "xrender";
     fade = true;
     fadeDelta = 5;
-    opacityRules = [ 
+    opacityRules = [
       "99:fullscreen"
       "91:class_g = 'Alacritty' && focused"
       "81:class_g = 'Alacritty' && !focused"
     ];
-      
+
     shadow = true;
     shadowOpacity = 0.75;
 
@@ -20,9 +20,11 @@
     };
   };
 
-  xsession.windowManager.i3.config.startup = [{
-    command = "systemctl --user restart picom";
-    always = true;
-    notification = false;
-  }];
+  xsession.windowManager.i3.config.startup = [
+    {
+      command = "systemctl --user restart picom";
+      always = true;
+      notification = false;
+    }
+  ];
 }

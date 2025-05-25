@@ -10,7 +10,7 @@
           width = "100%";
           height = "12pt";
           radius = 0;
-          background = "#3D0F34"; #base01
+          background = "#3D0F34"; # base01
           foreground = "#E5E9F0"; # base 05
           line-size = "3pt";
           border-top-size = 0;

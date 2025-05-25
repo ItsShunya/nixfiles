@@ -3,8 +3,8 @@
 {
 
   imports = [
-    ../nixos/core     # Common for all hosts.
+    ../nixos/core # Common for all hosts.
     ./packages.nix
   ];
-  
+
 }

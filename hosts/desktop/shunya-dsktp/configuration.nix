@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../../modules/common
-      ../../../modules/nixos/optional/bootloader/systemd
-      ../../../modules/nixos/optional/network/openssh/client
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../../modules/common
+    ../../../modules/nixos/optional/bootloader/systemd
+    ../../../modules/nixos/optional/network/openssh/client
+  ];
 
   # --- USER ---
 
@@ -15,7 +15,10 @@
   users.users.shunya = {
     isNormalUser = true;
     description = "Shunya";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     useDefaultShell = true;
     packages = with pkgs; [
       neovim
@@ -39,10 +42,10 @@
 
   services = {
 
-    # Window System. 
+    # Window System.
     xserver = {
       enable = true;
-      
+
       # Window manager --> i3wm.
       # Configured in Home Manager profile.
       windowManager.i3 = {
@@ -67,12 +70,11 @@
     };
   };
 
-
   # --- PROGRAMS ---
 
   programs = {
     thunar.enable = true;
-    dconf.enable = true;  # Necessary to save some configs after reboot.
+    dconf.enable = true; # Necessary to save some configs after reboot.
   };
 
   security = {

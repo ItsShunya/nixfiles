@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../../modules/common
-      ../../../modules/nixos/optional/bootloader/grub
-      ../../../modules/nixos/optional/network/openssh/server
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../../modules/common
+    ../../../modules/nixos/optional/bootloader/grub
+    ../../../modules/nixos/optional/network/openssh/server
+  ];
 
   # --- USER ---
 
@@ -15,7 +15,10 @@
   users.users.shunya = {
     isNormalUser = true;
     description = "Shunya";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     useDefaultShell = true;
     packages = with pkgs; [
       neovim
@@ -36,7 +39,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
   ];
