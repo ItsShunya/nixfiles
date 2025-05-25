@@ -3,9 +3,9 @@
 {
 
   imports = [
-    ./audio.nix
-    ./keyboard.nix
-    ./printer.nix
+    ./audio
+    ./keyboard
+    ./printer
   ];
   
 }

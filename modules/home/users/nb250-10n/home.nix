@@ -3,13 +3,7 @@
 {
   imports = [
     ../../core
-    ../../optional/desktop/polybar
-    ../../optional/desktop/i3
-    ../../optional/programs/alacritty
-    ../../optional/programs/picom
     ../../optional/programs/git
-    ../../optional/programs/vscode
-    ./wallpaper.nix
   ];
 
   # --- USER ---
@@ -21,18 +15,13 @@
   # Environment
   home.sessionVariables = {
     EDITOR = "nvim";
-    BROWSER = "firefox";
   };
 
 
   # --- PACKAGES ---
 
   home.packages = with pkgs; [
-    # Dev tools.
-    gitkraken
 
-    # Graphics.
-    krita
   ];
 
 

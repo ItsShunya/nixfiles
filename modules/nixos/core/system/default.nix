@@ -3,8 +3,8 @@
 {
 
   imports = [
-    ./i18n.nix
-    ./network.nix
+    ./i18n
+    ./networking
   ];
 
 }
