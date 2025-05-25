@@ -5,6 +5,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../../modules/common
+      ../../../modules/nixos/optional/bootloader/systemd
+      ../../../modules/nixos/optional/network/openssh/client
     ];
 
   # --- USER ---
@@ -31,7 +33,7 @@
     font-awesome
     nerdfonts
     #(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" "Iosevka" "FantasqueSansMono"]; })
-    ];
+  ];
 
   # --- SERVICES ---
 
@@ -63,9 +65,6 @@
         defaultSession = "xfce+i3";
       };
     };
-
-    # Other services.
-    openssh.enable = true;
   };
 
 
