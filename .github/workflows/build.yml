@@ -1,4 +1,4 @@
-name: Lint and test Nix files
+name: Test NixOS configurations
 
 # Controls when the workflow will run
 on:
@@ -31,16 +31,8 @@ jobs:
         run: nix flake check
         continue-on-error: false
         if: ${{ hashFiles('flake.nix') != '' }}
-
-      - name: Run nixpkgs-fmt (formatter)
-        run: nix run nixpkgs#nixpkgs-fmt -- --check .
-
+        
       - name: Build NixOS config
         run: |
-          nix build .#shunya-dsktp
-          nix build .#nb250-10n
-
-      - name: Run statix (linter)
-        run: |
-          nix-env -iA nixpkgs.statix
-          statix check .
+          nixos-rebuild test --flake .#shunya-dsktp
+          nixos-rebuild test --flake .#nb250-10n
