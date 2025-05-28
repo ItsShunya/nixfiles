@@ -17,22 +17,26 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        hostname:
+          - shunya-dsktp
+          - nb250-10n
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v25
+        uses: cachix/install-nix-action@v30
 
-      - name: Run nix flake check (if using flakes)
+      - name: Run nix flake check
         run: nix flake check
         continue-on-error: false
-        if: ${{ hashFiles('flake.nix') != '' }}
         
       - name: Build NixOS config
-        run: |
-          nixos-rebuild test --flake .#shunya-dsktp
-          nixos-rebuild test --flake .#nb250-10n
+        run: nix build .#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel -L
