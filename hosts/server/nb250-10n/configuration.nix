@@ -7,6 +7,7 @@
     ../../../modules/common
     ../../../modules/nixos/optional/bootloader/grub
     ../../../modules/nixos/optional/network/openssh/server
+    ../../../modules/nixos/optional/services/home_assistant
   ];
 
   # --- USER ---
