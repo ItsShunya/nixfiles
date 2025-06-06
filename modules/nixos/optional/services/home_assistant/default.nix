@@ -1,6 +1,12 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    # ./findandroid.nix
+    ./nginx.nix
+    # ./postgre.nix
+  ];
+
   services.home-assistant = {
     enable = true;
     extraComponents = [

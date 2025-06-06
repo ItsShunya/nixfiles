@@ -39,6 +39,14 @@
           modules = [
             ./hosts/server/nb250-10n/configuration.nix
 
+            # Standalone home-manager configuration, available through
+            # 'home-manager --flake .#name@hostname'.
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.shunya = import ./modules/home/users/nb250-10n/home.nix;
+            }
           ];
         };
       };
