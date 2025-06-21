@@ -1,0 +1,21 @@
+# IDE.
+.vscode/
+.idea/
+
+# OS generated files.
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+# Vim Files.
+*~
+.*.un~
+.*.sw[m-p]
+Session.vim
+
+# Emacs Files.
+.\#*
+
+# Do not ignore any `.gitkeep` files.
+!.gitkeep
