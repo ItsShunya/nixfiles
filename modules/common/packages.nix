@@ -10,7 +10,10 @@
   environment.systemPackages = with pkgs; [
     git
     wget
-    python3
+    #python3
+    #uv
   ];
+
+  programs.nix-ld.enable = true;
 
 }

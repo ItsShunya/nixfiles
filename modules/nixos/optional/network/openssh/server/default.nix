@@ -16,10 +16,10 @@
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     22
-    config.services.home-assistant.config.http.server_port
     53
     80
     443
+    8123
   ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 

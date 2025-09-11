@@ -33,7 +33,9 @@
     # Graphics.
     krita
 
+    # NixOS dev.
     nixfmt-rfc-style
+    pre-commit
   ];
 
   # --- PROGRAMS ---
