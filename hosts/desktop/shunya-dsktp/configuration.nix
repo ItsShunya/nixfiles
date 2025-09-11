@@ -24,7 +24,7 @@
       neovim
       nerdfonts
       # The following modules are for i3.
-      gnome.gnome-keyring
+      gnome-keyring
       polkit_gnome
       clipmenu
     ];
@@ -65,10 +65,12 @@
       # Display manager --> lightDM.
       displayManager = {
         lightdm.enable = true;
-        defaultSession = "xfce+i3";
+          enable = true;
       };
     };
   };
+
+  services.displayManager.defaultSession = "xfce+i3";
 
   # --- PROGRAMS ---
 

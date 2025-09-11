@@ -17,7 +17,10 @@ in
     config = {
       modifier = mod;
 
-      fonts = [ "DejaVu Sans Mono, FontAwesome 6" ];
+      fonts = {
+        names = [ "DejaVu Sans Mono" "FontAwesome 6" ];
+        size = 11.0;
+      };
 
       terminal = "alacritty";
 
