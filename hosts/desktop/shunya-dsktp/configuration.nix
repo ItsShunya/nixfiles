@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  wallpaper_src = ../../../bin/images/wallpaper;
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -64,8 +67,22 @@
 
       # Display manager --> lightDM.
       displayManager = {
-        lightdm.enable = true;
+        lightdm =  {
           enable = true;
+          greeter.enable = true;
+          greeters.gtk.enable = false;
+          greeters.mini.enable = false;
+          greeters.slick = {
+            enable = lib.mkForce true;
+            theme.name = "Arc-Dark";   # example
+            iconTheme.name = "Papirus";
+            draw-user-backgrounds = false;
+            extraConfig = ''
+              background="${wallpaper_src}/flying_ships_h.jpg"
+              show-hostname=true
+            '';
+          };
+        };
       };
     };
   };
