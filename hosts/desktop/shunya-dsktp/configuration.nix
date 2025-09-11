@@ -78,10 +78,14 @@ in
             iconTheme.name = "Papirus";
             draw-user-backgrounds = false;
             extraConfig = ''
-              background="${wallpaper_src}/flying_ships_h.jpg"
               show-hostname=true
+              show-keyboard=false
+              show-a11y=false
+              show-power=false
+              only-on-monitor=0
             '';
           };
+          background = "${wallpaper_src}/flying_ships_h.jpg";
         };
       };
     };
