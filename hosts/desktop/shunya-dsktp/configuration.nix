@@ -25,11 +25,11 @@ in
     useDefaultShell = true;
     packages = with pkgs; [
       neovim
-      nerdfonts
       # The following modules are for i3.
       gnome-keyring
       polkit_gnome
       clipmenu
+      lightlocker # Session-locker for XFCE workaround.
     ];
   };
 
@@ -37,8 +37,9 @@ in
 
   fonts.packages = with pkgs; [
     font-awesome
-    nerdfonts
-    #(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" "Iosevka" "FantasqueSansMono"]; })
+    fantasque-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.iosevka
   ];
 
   # --- SERVICES ---
@@ -61,6 +62,7 @@ in
         xfce = {
           enable = true;
           noDesktop = true;
+          enableScreensaver = false;
           enableXfwm = false;
         };
       };
@@ -111,6 +113,6 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }

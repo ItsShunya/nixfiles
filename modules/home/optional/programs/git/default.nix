@@ -4,7 +4,11 @@
   # Basic configuration of git.
   programs.git = {
     enable = true;
-    userName = "Victor Luque";
-    userEmail = "luque.viictor@gmail.com";
+    settings = {
+      user = {
+        name = "Victor Luque";
+        email = "luque.viictor@gmail.com";
+      };
+    };
   };
 }

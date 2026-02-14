@@ -5,8 +5,8 @@
       config = {
         "bar/main" = {
           bottom = false;
-          font-0 = "FantasqueSansMNerdFont Propo:pixelsize=9;3";
-          font-1 = "Iosevka Nerd Font:pixelsize=9;2";
+          font-0 = "FantasqueSansMono:pixelsize=9;3";
+          font-1 = "Iosevka:pixelsize=9;2";
           width = "100%";
           height = "12pt";
           radius = 0;

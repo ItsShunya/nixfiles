@@ -40,10 +40,10 @@ history               = 65535
 #multiplier            = 3
 
 [font]
-normal                = { family = "FantasqueSansMNerdFont Propo", style = "Regular" }
-bold                  = { family = "FantasqueSansMNerdFont Propo", style = "Bold" }
-italic                = { family = "FantasqueSansMNerdFont Propo", style = "Italic" }
-bold_italic           = { family = "FantasqueSansMNerdFont Propo", style = "Bold Italic" }
+normal                = { family = "FantasqueSansMono", style = "Regular" }
+bold                  = { family = "FantasqueSansMono", style = "Bold" }
+italic                = { family = "FantasqueSansMono", style = "Italic" }
+bold_italic           = { family = "FantasqueSansMono", style = "Bold Italic" }
 #size                  = 11.25
 offset                = { x = 0, y = 0 }
 glyph_offset          = { x = 0, y = 0 }
