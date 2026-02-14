@@ -49,19 +49,19 @@ This structure allows for easy scalability and modularity. Adding a new machine 
 
 To use a host configuration on a fresh NixOS installation, follow these steps:
 
-1. **Set the Hostname**  
-   Ensure the hostname is set correctly:  
+1. **Set the Hostname**
+   Ensure the hostname is set correctly:
    ```bash
    hostname <machine name>
    ```
 
-2. **Connect to the Internet**  
+2. **Connect to the Internet**
    Verify that the machine has internet access and the necessary credentials to clone this repository.
 
-3. **Update the Configuration**  
+3. **Update the Configuration**
    Ensure the machine's configuration is up-to-date by pulling the latest changes from the repository.
 
-4. **Backup Hardware Configuration**  
+4. **Backup Hardware Configuration**
    Replace the generated `hardware-configuration.nix` file with the one specific to the host:
    ```bash
    # Overwrite hardware-configuration.nix file with the generated one
@@ -72,7 +72,7 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
    git commit -am "Add hardware-configuration for $(hostname)" && git push
    ```
 
-5. **Deploy the Configuration**  
+5. **Deploy the Configuration**
    Apply the configuration using the NixOS rebuild command:
    ```bash
    sudo nixos-rebuild switch --flake .#$(hostname)
@@ -82,10 +82,10 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
 
 ## Current Hosts
 
-| Configuration                       | Type      | Location    | VPN IP         | Description                  |
-| ----------------------------------- | --------- | ----------- | -------------- | ---------------------------- |
-| [shunya-dsktp](./hosts/desktop/shunya-dsktp)   | Desktop   | Local       | `10.9.97.152`  | Main desktop machine         |
-| [nb250-10n](./hosts/server/nb250-10n)           | Server    | Local       | `10.9.97.185`  | Notebook acting as a server  |
+| Configuration                                   | Type        | Location  | VPN IP         | Description                  |
+| ----------------------------------------------- | ----------- | --------- | -------------- | ---------------------------- |
+| [shunya-dsktp](./hosts/desktop/shunya-dsktp)    | Desktop     | Local     | `10.9.97.152`  | Main desktop machine         |
+| [nb250-10n](./hosts/server/nb250-10n)           | Server      | Local     | `10.9.97.186`  | Notebook acting as a server  |
 
 Each host has a dedicated `README.md` file documenting the services and configurations specific to that machine.
 

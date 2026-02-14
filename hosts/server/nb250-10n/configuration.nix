@@ -7,7 +7,7 @@
     ../../../modules/common
     ../../../modules/nixos/optional/bootloader/grub
     ../../../modules/nixos/optional/network/openssh/server
-    ../../../modules/nixos/optional/services/home_assistant
+#    ../../../modules/nixos/optional/services/home_assistant
     ../../../modules/nixos/optional/services/dnsmasq
   ];
 
@@ -28,23 +28,6 @@
   };
 
   networking.hostName = "nb250-10n";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "es";
-    variant = "";
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

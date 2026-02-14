@@ -27,6 +27,7 @@
     dnsutils # `dig` + `nslookup`.
     nmap # Utility for network discovery and security auditing.
     ipcalc # Calculator for the IPv4/v6 addresses.
+    inetutils # e.g. ifconfig
 
     # Misc.
     file
