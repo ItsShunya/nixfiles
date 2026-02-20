@@ -9,6 +9,8 @@
     ../../../modules/nixos/optional/network/openssh/server
 #    ../../../modules/nixos/optional/services/home_assistant
     ../../../modules/nixos/optional/services/dnsmasq
+    # HomeLab containers.
+    ../../../modules/nixos/optional/containers/home_assistant
   ];
 
   # --- USER ---
