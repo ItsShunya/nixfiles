@@ -2,7 +2,7 @@
 
 {
   imports = [
-    #./nginx.nix
+    ./nginx.nix
   ];
 
   virtualisation.oci-containers = {
