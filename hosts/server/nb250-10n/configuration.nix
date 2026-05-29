@@ -10,6 +10,7 @@
     ../../../modules/nixos/optional/services/dnsmasq
     # HomeLab containers.
     ../../../modules/nixos/optional/containers/home_assistant
+    ../../../modules/nixos/optional/containers/fava
   ];
 
   # --- USER ---
@@ -21,6 +22,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     useDefaultShell = true;
     packages = with pkgs; [

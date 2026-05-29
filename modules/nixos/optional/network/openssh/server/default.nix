@@ -20,6 +20,7 @@
     80
     443
     8123
+    5000
   ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 
