@@ -8,7 +8,7 @@
   virtualisation.oci-containers = {
     backend = "docker";
 
-    containers."fava" = {
+    containers."finance" = {
       autoStart = true;
 
       volumes = [
