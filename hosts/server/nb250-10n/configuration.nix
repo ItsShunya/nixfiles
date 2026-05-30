@@ -11,6 +11,7 @@
     # HomeLab containers.
     ../../../modules/nixos/optional/containers/home_assistant
     ../../../modules/nixos/optional/containers/fava
+    ../../../modules/nixos/optional/containers/omeka_s
   ];
 
   # --- USER ---
