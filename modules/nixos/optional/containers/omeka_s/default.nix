@@ -1,5 +1,10 @@
 { config, pkgs, ... }:
+
 {
+  imports = [
+    ./nginx.nix
+  ];
+
   systemd.services.docker-omeka-network = {
     description = "Create Docker network for Omeka S";
     after = [ "docker.service" ];
