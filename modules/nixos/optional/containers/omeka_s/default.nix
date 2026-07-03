@@ -55,7 +55,7 @@
 
     containers."omeka" = {
       autoStart = true;
-      image = "giocomai/omeka-s-docker:v4.1.1";
+      image = "giocomai/omeka-s-docker:v4.2.0";
       ports = [ "8081:80" ];
       volumes = [
         "omeka:/var/www/html/volume"
@@ -66,11 +66,15 @@
         MYSQL_DATABASE = "omeka";        # FIXME
         MYSQL_HOST = "omeka_mariadb";
         APPLICATION_ENV = "development";
-        OMEKA_THEMES = "https://github.com/omeka-s-themes/default";
+        OMEKA_THEMES = ''
+          https://github.com/omeka-s-themes/default
+          https://github.com/omeka-s-themes/freedom
+        '';
         OMEKA_MODULES = ''
           https://github.com/Daniel-KM/Omeka-S-module-Common
           https://github.com/Daniel-KM/Omeka-S-module-EasyAdmin
           https://github.com/Daniel-KM/Omeka-S-module-Adminer
+          https://github.com/Daniel-KM/Omeka-S-module-CustomOntology
         '';
         PHP_MEMORY_LIMIT = "512M";
         PHP_UPLOAD_MAX_FILESIZE = "64M";
