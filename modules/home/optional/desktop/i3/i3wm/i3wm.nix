@@ -65,7 +65,7 @@ in
         }
         {
           # This requires a delay otherwise the resolution is not set correctly by feh.
-          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2";
+          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper2 ~/.wallpaper1";
           always = true;
           notification = false;
         }
