@@ -1,3 +1,5 @@
+# NOTE: unused
+
 { config, pkgs, ... }:
 
 {
