@@ -61,6 +61,11 @@ in
 
       startup = [
         {
+          command = "xrandr --output DP-2 --rotate left --output DP-1 --right-of DP-2";
+          always = true;
+          notification = false;
+        }
+        {
           command = "firefox";
         }
         {
