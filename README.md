@@ -7,9 +7,20 @@ Feel free to use parts of this repository, but note that it is tailored to my sp
 
 ---
 
+## Documentation
+
+| Guide | Covers |
+| --- | --- |
+| [Structure](./docs/structure.md) | How the repository is organised, NixOS vs Home Manager, and where new things go |
+| [Hosts](./docs/hosts.md) | Each machine, what it is used for and the services it runs |
+| [Building and deploying](./docs/build-and-deploy.md) | Build commands, local and remote (SSH) deployment, updates, rollbacks |
+| [Adding a host](./docs/add-host.md) | Step-by-step guide with templates for a new machine |
+
+---
+
 ## Repository Structure
 
-The repository is split into three layers: **modules** (one feature each), **profiles** (bundles of modules for a kind of machine) and **hosts** (one machine each).
+The repository is split into three layers: **modules** (one feature each), **profiles** (bundles of modules for a kind of machine) and **hosts** (one machine each). See [docs/structure.md](./docs/structure.md) for the full picture and where new things go.
 
 ```
 flake.nix                  # inputs + mkHost; each host is wired up automatically
@@ -28,6 +39,7 @@ modules/
     desktop/               # i3, polybar, picom, alacritty, vscode
 secrets/                   # sops-nix setup + encrypted secrets/<hostname>.yaml
 assets/                    # wallpapers
+docs/                      # detailed documentation
 ```
 
 ### Configuration Philosophy
@@ -36,7 +48,7 @@ assets/                    # wallpapers
 - **Profiles** are the only place that bundles modules. Each profile pulls in both the NixOS and the Home Manager side of its role.
 - **Hosts** import exactly one profile and add what only that machine needs (bootloader, monitors, services).
 
-Adding a machine typically involves:
+Adding a machine typically involves the steps below; [docs/add-host.md](./docs/add-host.md) has the full guide with templates.
 1. Creating `hosts/<name>/` with `default.nix`, `hardware-configuration.nix` and `home.nix`.
 2. Importing `profiles/desktop.nix` or `profiles/server.nix` from `default.nix`.
 3. Adding `<name>` to the host list in `flake.nix` and to the CI matrix in `.github/workflows/build.yml`.
@@ -84,6 +96,8 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
    sudo nixos-rebuild switch --flake .#$(hostname)
    ```
 
+   To deploy a server from your desktop over SSH instead, see [Building and deploying](./docs/build-and-deploy.md#deploying-the-server-over-ssh).
+
 ---
 
 ## Current Hosts
@@ -92,6 +106,8 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
 | ----------------------------------------------- | ----------- | --------- | -------------- | ---------------------------- |
 | [shunya-dsktp](./hosts/shunya-dsktp)            | Desktop     | Local     | `10.9.97.152`  | Main desktop machine         |
 | [nb250-10n](./hosts/nb250-10n)                  | Server      | Local     | `10.9.97.186`  | Notebook acting as a server  |
+
+What each host is used for and the services it runs are described in [docs/hosts.md](./docs/hosts.md).
 
 ---
 
