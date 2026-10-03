@@ -20,43 +20,33 @@
 
   outputs =
     inputs@{ nixpkgs, home-manager, ... }:
+    let
+      # A host is hosts/<name>/default.nix (system) plus
+      # hosts/<name>/home.nix (Home Manager, user shunya).
+      mkHost =
+        name:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/${name}
+            home-manager.nixosModules.home-manager
+            {
+              networking.hostName = name;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.shunya.imports = [ ./hosts/${name}/home.nix ];
+              };
+            }
+          ];
+        };
+    in
     {
       # NixOS configuration entrypoint, available through
       # 'nixos-rebuild --flake .#name'.
-      nixosConfigurations = {
-        shunya-dsktp = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/desktop/shunya-dsktp/configuration.nix
-
-            # Standalone home-manager configuration, available through
-            # 'home-manager --flake .#name@hostname'.
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.shunya = import ./modules/home/users/shunya-dsktp/home.nix;
-            }
-          ];
-        };
-
-        nb250-10n = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/server/nb250-10n/configuration.nix
-
-            # Standalone home-manager configuration, available through
-            # 'home-manager --flake .#name@hostname'.
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.shunya = import ./modules/home/users/nb250-10n/home.nix;
-            }
-          ];
-        };
-      };
+      nixosConfigurations = nixpkgs.lib.genAttrs [
+        "shunya-dsktp"
+        "nb250-10n"
+      ] mkHost;
     };
 }
