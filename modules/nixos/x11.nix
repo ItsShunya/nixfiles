@@ -81,6 +81,7 @@ in
   # --- PROGRAMS ---
 
   programs = {
+    firefox.enable = true;
     thunar.enable = true;
     dconf.enable = true; # Necessary to save some configs after reboot.
   };

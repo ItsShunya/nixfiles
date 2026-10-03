@@ -1,8 +1,10 @@
-# Workstation: X11 session with i3, plus the desktop user programs.
+# Workstation: X11 session with i3, audio, printing and desktop programs.
 {
   imports = [
     ./base.nix
     ../modules/nixos/x11.nix
+    ../modules/nixos/audio.nix
+    ../modules/nixos/printing.nix
   ];
 
   home-manager.users.shunya.imports = [

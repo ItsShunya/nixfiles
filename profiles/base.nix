@@ -7,8 +7,6 @@
     ../modules/nixos/zsh.nix
     ../modules/nixos/user.nix
     ../modules/nixos/packages.nix
-    ../modules/nixos/audio.nix
-    ../modules/nixos/printing.nix
   ];
 
   home-manager.users.shunya.imports = [
