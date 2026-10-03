@@ -70,7 +70,4 @@
       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
     };
   };
-
-  # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
