@@ -29,14 +29,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
 
       - name: Run nix flake check
         run: nix flake check
         continue-on-error: false
-        
+
       - name: Build NixOS config
         run: nix build .#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel -L
