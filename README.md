@@ -9,39 +9,44 @@ Feel free to use parts of this repository, but note that it is tailored to my sp
 
 ## Repository Structure
 
-The repository is structured to allow easy management of multiple NixOS hosts, with a clear separation between core, optional, and host-specific configurations. Below is an overview of the key directories:
+The repository is split into three layers: **modules** (one feature each), **profiles** (bundles of modules for a kind of machine) and **hosts** (one machine each).
 
-### Key Directories
-
-- **`flake.nix`**: The entry point for the repository, defining the Nix flake configuration.
-- **`docs/`**: Documentation for various configurations and troubleshooting guides..
-- **`hosts/`**: Host-specific configurations.
-  - Each subdirectory (e.g., `desktop/`, `server/`, `vm/`) contains settings unique to a specific machine.
-  - Host configurations may include machine-specific options like `disko` or hardware drivers.
-- **`modules/`**: Reusable configuration modules.
-  - **`common/`**: User-specific configurations shared across machines.
-    - Subdirectories for different users (e.g., `root/`, `me/`, `guest/`) and platforms (`nixos/`, `home/`).
-  - **`nixos/`**: System-level configurations.
-    - **`core/`**: Modules applied to all machines (e.g., hardware, kernel, shell, system).
-    - **`optional/`**: Modules applied to specific machines (e.g., bootloader, WiFi, GPU drivers).
-  - **`home/`**: Home-manager configurations.
-    - **`core/`**: Modules applied to all users.
-    - **`optional/`**: Modules for specific use cases (e.g., desktop environments, general software).
-    - **`users/`**: User-specific configurations (e.g., `me/` with custom packages like Git).
-- **`secrets/`**: Encrypted secrets managed with `sops`.
-- **`.sops.yaml`**: Configuration file for `sops`.
+```
+flake.nix                  # inputs + mkHost; each host is wired up automatically
+hosts/<name>/
+  default.nix              # system: profile, bootloader, host-only settings
+  hardware-configuration.nix
+  home.nix                 # Home Manager for user shunya on this host
+profiles/
+  base.nix                 # every host
+  desktop.nix              # base + X11/i3, audio, printing, desktop programs
+  server.nix               # base + SSH server
+modules/
+  nixos/                   # NixOS modules, one file per feature
+    homelab/               # containers behind an nginx reverse proxy
+  home/                    # Home Manager modules
+    desktop/               # i3, polybar, picom, alacritty, vscode
+secrets/                   # sops-nix setup + encrypted secrets/<hostname>.yaml
+assets/                    # wallpapers
+```
 
 ### Configuration Philosophy
 
-- **Core Modules (`core/`)**: Applied systematically to all machines.
-- **Optional Modules (`optional/`)**: Applied to specific machines or use cases.
-- **Host-Specific Configurations (`hosts/`)**: Applied only to a single machine.
+- **Modules** do one thing and are enabled by importing them; they never import each other, except homelab services importing `homelab/common.nix`.
+- **Profiles** are the only place that bundles modules. Each profile pulls in both the NixOS and the Home Manager side of its role.
+- **Hosts** import exactly one profile and add what only that machine needs (bootloader, monitors, services).
 
-This structure allows for easy scalability and modularity. Adding a new machine typically involves:
-1. Creating a new subdirectory in `hosts/`.
-2. Copying a template configuration.
-3. Adding any required optional modules (e.g., drivers, WiFi).
-4. Importing shared user configurations from `modules/common/users`.
+Adding a machine typically involves:
+1. Creating `hosts/<name>/` with `default.nix`, `hardware-configuration.nix` and `home.nix`.
+2. Importing `profiles/desktop.nix` or `profiles/server.nix` from `default.nix`.
+3. Adding `<name>` to the host list in `flake.nix` and to the CI matrix in `.github/workflows/build.yml`.
+
+### Secrets
+
+Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix). Each host decrypts `secrets/<hostname>.yaml` at activation using its SSH host key; the recipients are listed in `.sops.yaml`.
+
+- Edit secrets: `nix shell nixpkgs#sops -c sops secrets/<hostname>.yaml`. This needs your age key in `~/.config/sops/age/keys.txt`, derived from your SSH key with `ssh-to-age -private-key`.
+- Add a host: convert its key with `ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`, add it to `.sops.yaml`, then run `sops updatekeys secrets/<hostname>.yaml`.
 
 ---
 
@@ -69,7 +74,8 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
       ./hosts/$(hostname)/hardware-configuration.nix
 
    # Commit and push the new file
-   git commit -am "Add hardware-configuration for $(hostname)" && git push
+   git add hosts/$(hostname)/hardware-configuration.nix
+   git commit -m "Add hardware-configuration for $(hostname)" && git push
    ```
 
 5. **Deploy the Configuration**
@@ -84,10 +90,8 @@ To use a host configuration on a fresh NixOS installation, follow these steps:
 
 | Configuration                                   | Type        | Location  | VPN IP         | Description                  |
 | ----------------------------------------------- | ----------- | --------- | -------------- | ---------------------------- |
-| [shunya-dsktp](./hosts/desktop/shunya-dsktp)    | Desktop     | Local     | `10.9.97.152`  | Main desktop machine         |
-| [nb250-10n](./hosts/server/nb250-10n)           | Server      | Local     | `10.9.97.186`  | Notebook acting as a server  |
-
-Each host has a dedicated `README.md` file documenting the services and configurations specific to that machine.
+| [shunya-dsktp](./hosts/shunya-dsktp)            | Desktop     | Local     | `10.9.97.152`  | Main desktop machine         |
+| [nb250-10n](./hosts/nb250-10n)                  | Server      | Local     | `10.9.97.186`  | Notebook acting as a server  |
 
 ---
 
