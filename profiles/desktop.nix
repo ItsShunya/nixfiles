@@ -5,6 +5,7 @@
     ../modules/nixos/x11.nix
     ../modules/nixos/audio.nix
     ../modules/nixos/printing.nix
+    ../themes
   ];
 
   home-manager.users.shunya.imports = [
@@ -13,5 +14,6 @@
     ../modules/home/desktop/alacritty
     ../modules/home/desktop/picom.nix
     ../modules/home/desktop/vscode.nix
+    ../themes/home.nix
   ];
 }

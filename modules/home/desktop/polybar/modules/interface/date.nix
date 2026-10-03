@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
@@ -9,8 +14,8 @@
           date = "%d %b %l:%M %p";
           date-alt = "%Y-%m-%d %H:%M:%S";
           label = "%date%";
-          label-foreground = "#E5E9F0"; # base0A;
-          # format-background = "#3D0F34";
+          label-foreground = palette.foreground;
+          # format-background = palette.background;
         };
       };
     };

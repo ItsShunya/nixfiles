@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  palette,
   ...
 }:
 
@@ -17,13 +18,7 @@ in
     config = {
       modifier = mod;
 
-      fonts = {
-        names = [
-          "DejaVu Sans Mono"
-          "FontAwesome 6"
-        ];
-        size = 11.0;
-      };
+      # Fonts are set in themes/home.nix.
 
       terminal = "alacritty";
 
@@ -70,7 +65,7 @@ in
         "${mod}+p" = "exec ${pkgs.rofi}/bin/rofi";
         "${mod}+x" = "exec sh -c '${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png'";
         "${mod}+Shift+x" =
-          "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
+          "exec sh -c '${pkgs.i3lock}/bin/i3lock -c ${lib.removePrefix "#" palette.lock} & sleep 5 && xset dpms force off'";
 
         # Focus
         "${mod}+Left" = "focus left";

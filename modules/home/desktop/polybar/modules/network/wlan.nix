@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   imports = [
     ./base.nix
@@ -10,7 +15,7 @@
         "module/wlan" = {
           "inherit" = "network-base";
           interface-type = "wireless";
-          label-connected = "%{F#F0C674}%ifname%%{F-} %essid% %local_ip%";
+          label-connected = "%{F${palette.primary}}%ifname%%{F-} %essid% %local_ip%";
         };
       };
     };

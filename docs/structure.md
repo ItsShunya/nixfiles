@@ -29,6 +29,7 @@ Each layer only builds on the one below it: hosts import a profile, and profiles
 │   │   └── homelab/          #   containers behind an nginx reverse proxy
 │   └── home/                 # Home Manager modules (user level)
 │       └── desktop/          #   graphical programs and their dotfiles
+├── themes/                   # how desktops look: fonts, colors, color themes
 ├── secrets/                  # sops-nix setup and encrypted secrets per host
 ├── assets/                   # files referenced by the config (wallpapers)
 ├── docs/                     # this documentation
@@ -140,7 +141,7 @@ A profile describes a kind of machine by listing the modules it gets, on both th
 | Profile | Imports | Home Manager |
 | --- | --- | --- |
 | `base.nix` | nix, locale, networking, zsh, user, packages | `base.nix`, `git.nix` |
-| `desktop.nix` | `base.nix` + x11, audio, printing | i3, polybar, picom, alacritty, vscode |
+| `desktop.nix` | `base.nix` + x11, audio, printing, `themes/` | i3, polybar, picom, alacritty, vscode, `themes/home.nix` |
 | `server.nix` | `base.nix` + ssh | (nothing beyond base) |
 
 A host imports exactly one of `desktop.nix` or `server.nix`, never `base.nix` directly. If a new kind of machine appears (say a laptop that's a desktop plus Wi-Fi and battery tweaks), create `profiles/laptop.nix` that imports `./desktop.nix` and adds the extras.
@@ -157,7 +158,7 @@ System-level modules, one feature per file. A module is switched on by importing
 | `zsh.nix` | zsh as the default shell for every user | base |
 | `user.nix` | The `shunya` account: groups, default shell, neovim | base |
 | `packages.nix` | System-wide basics (`git`, `wget`) and `nix-ld` for running foreign binaries | base |
-| `x11.nix` | X server, Spanish keyboard layout, i3 inside an Xfce session, LightDM + slick greeter, fonts, Firefox, Thunar, polkit | desktop |
+| `x11.nix` | X server, Spanish keyboard layout, i3 inside an Xfce session, LightDM + slick greeter, Firefox, Thunar, polkit | desktop |
 | `audio.nix` | PipeWire with PulseAudio and ALSA compatibility | desktop |
 | `printing.nix` | CUPS | desktop |
 | `ssh.nix` | OpenSSH server, key-only login, the authorized keys for `shunya` | server |
@@ -186,8 +187,8 @@ User-level (Home Manager) modules.
 | `desktop/i3.nix` | i3 settings: gaps, keybindings, Firefox autostart | desktop |
 | `desktop/polybar/` | The status bar (see below) | desktop |
 | `desktop/picom.nix` | Compositor: fades, shadows, Alacritty opacity | desktop |
-| `desktop/alacritty/` | Terminal: `default.nix` installs it and links `alacritty.toml` | desktop |
-| `desktop/vscode.nix` | VS Code with its extensions | desktop |
+| `desktop/alacritty/` | Terminal: `default.nix` installs it and links `alacritty.toml` (colors and font are in `themes/`) | desktop |
+| `desktop/vscode.nix` | VS Code | desktop |
 
 **Polybar** is split into small parts:
 
@@ -197,6 +198,32 @@ User-level (Home Manager) modules.
 - `modules/<group>/<part>.nix` each define one bar segment (`cpu`, `memory`, `eth`, `wlan`, …).
 
 Some parts (`wlan`, `filesystem`, `xkeyboard`, `whoami`) aren't used yet. To use one, import it in `default.nix` (or in a host's `home.nix` for one machine only) and add its name to the bar.
+
+### `themes/`
+
+How the desktops look: fonts, colors and color themes. Programs are *configured* in `modules/`; how they *look* is set here, so restyling the desktop doesn't mean editing every program's module. Only `profiles/desktop.nix` imports it, so servers never load it.
+
+| File | Kind | Contents |
+| --- | --- | --- |
+| `default.nix` | NixOS module | Font packages; the login screen's GTK theme, icon theme and background |
+| `home.nix` | Home Manager module | i3 and Polybar fonts, the VS Code color theme, Alacritty's colors. Also passes `palette.nix` to every Home Manager module as the `palette` argument |
+| `palette.nix` | Plain attribute set | Every color the bar, i3 and the lock screen use, named by role (`background`, `foreground`, `primary`, `urgent-background`…) |
+| `alacritty.toml` | Alacritty config | Terminal color scheme (Catppuccin Mocha) and font. Linked to `~/.config/alacritty/theme.toml`, which the main `alacritty.toml` imports |
+
+A color that sits inside a program's own settings (a Polybar segment, an inline `%{F…}` tag, the i3lock command) is read from `palette`, never written as a hex code:
+
+```nix
+# modules/home/desktop/polybar/modules/network/eth.nix
+{ palette, ... }:
+{
+  services.polybar.config."module/eth".label-connected =
+    "%{F${palette.primary}}%ifname%%{F-} %local_ip%";
+}
+```
+
+`palette` only exists where `themes/home.nix` is imported. A module that takes it fails with "attribute 'palette' missing" on a server, so only use it in desktop modules.
+
+Per-monitor wallpapers stay in each host's `home.nix`, because which image fits depends on that machine's monitors.
 
 ### `secrets/`
 
@@ -219,7 +246,7 @@ Edit secrets from the repository root with `nix shell nixpkgs#sops -c sops secre
 
 ### `assets/`
 
-Binary files the configuration references by path. Right now that's `assets/wallpaper/`, used by the login screen (`modules/nixos/x11.nix`) and the desktop background (`hosts/shunya-dsktp/home.nix`). Files are copied into the Nix store at build time, so changing one triggers a rebuild of whatever uses it.
+Binary files the configuration references by path. Right now that's `assets/wallpaper/`, used by the login screen (`themes/default.nix`) and the desktop background (`hosts/shunya-dsktp/home.nix`). Files are copied into the Nix store at build time, so changing one triggers a rebuild of whatever uses it.
 
 ### `.github/workflows/`
 
@@ -245,6 +272,7 @@ Pull requests opened by the update workflow only trigger `build.yml` if a `FLAKE
 - **One feature per module file.** Use a folder only when a module has more than one file (`alacritty/` with its TOML, `polybar/` with its parts). Never add a `default.nix` whose only job is to import other files: bundling is the profiles' job.
 - **Import to enable.** Modules have no `enable` options of our own. The exception is `homelab.proxies`, because many services share one nginx.
 - **Modules don't import each other**, except homelab services importing `homelab/common.nix` and polybar's internal parts.
+- **No colors or fonts in `modules/`.** Add a role to `themes/palette.nix` and read it as `palette.<role>`; set fonts and color themes in `themes/`.
 - **Hosts import exactly one profile.**
 - **Overriding a shared value.** Lists (packages, firewall ports, groups) merge across modules, so just add to them. A single value that's already set elsewhere (like `networking.networkmanager.enable = true` in base) can't be redefined with a different value; use `lib.mkForce`. If several hosts end up forcing the same thing, move that setting out of the shared module instead.
 - **`stateVersion` is set once.** `system.stateVersion` (in `default.nix`) and `home.stateVersion` (in `home.nix`) record the release a machine was *installed* with. They keep defaults for existing data stable, so leave them alone when upgrading NixOS.
@@ -268,6 +296,8 @@ Pull requests opened by the update workflow only trigger `build.yml` if a `FLAKE
 | Add a password or token | `secrets/<host>.yaml` via `sops`, declared with `sops.secrets` in the module that uses it |
 | Add a driver used by some machines (NVIDIA, Wi-Fi firmware) | A new `modules/nixos/<driver>.nix`, imported by those hosts |
 | Change a monitor layout, wallpaper or bar for one machine | That host's `home.nix` |
+| Change a color of the bar, workspaces or lock screen | `themes/palette.nix` |
+| Change a font, the terminal colors, or a program's color theme | `themes/home.nix` or `themes/alacritty.toml` (system fonts and login screen: `themes/default.nix`) |
 | Change a setting for every host | The module that owns it (`locale.nix`, `nix.nix`, …), or a new module imported by `profiles/base.nix` |
 | Add a new kind of machine (laptop, VM) | A new `profiles/<kind>.nix` built on an existing profile |
 | Add a wallpaper or other file | `assets/` |

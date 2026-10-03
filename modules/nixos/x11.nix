@@ -1,8 +1,5 @@
 { lib, pkgs, ... }:
 
-let
-  wallpaper_src = ../../assets/wallpaper;
-in
 {
   # Session helpers used by the i3 setup.
   users.users.shunya.packages = with pkgs; [
@@ -12,12 +9,7 @@ in
     lightlocker # Session-locker for XFCE workaround.
   ];
 
-  fonts.packages = with pkgs; [
-    font-awesome
-    fantasque-sans-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.iosevka
-  ];
+  # Fonts and the greeter's look are in themes/default.nix.
 
   # --- SERVICES ---
 
@@ -59,9 +51,6 @@ in
           greeters.mini.enable = false;
           greeters.slick = {
             enable = lib.mkForce true;
-            theme.name = "Arc-Dark"; # example
-            iconTheme.name = "Papirus";
-            draw-user-backgrounds = false;
             extraConfig = ''
               show-hostname=true
               show-keyboard=false
@@ -70,7 +59,6 @@ in
               only-on-monitor=0
             '';
           };
-          background = "${wallpaper_src}/flying_ships_h.jpg";
         };
       };
     };

@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
@@ -7,9 +12,9 @@
           type = "internal/fs";
           interval = 25;
           mount-0 = "/";
-          label-mounted = "%{F#F0C674}%mountpoint%%{F-} %percentage_used%%";
+          label-mounted = "%{F${palette.primary}}%mountpoint%%{F-} %percentage_used%%";
           label-unmounted = "%mountpoint% not mounted";
-          label-unmounted-foreground = "#FFFFFF";
+          label-unmounted-foreground = palette.alert;
         };
       };
     };

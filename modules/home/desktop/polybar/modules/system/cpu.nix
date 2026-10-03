@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
@@ -7,7 +12,7 @@
           type = "internal/cpu";
           interval = 2;
           format-prefix = "CPU ";
-          format-prefix-foreground = "#E5E9F0";
+          format-prefix-foreground = palette.foreground;
           label = "%percentage:2%%";
         };
       };

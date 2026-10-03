@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
@@ -8,7 +13,7 @@
           interval = 5;
           format-connected = "<label-connected>";
           format-disconnected = "<label-disconnected>";
-          label-disconnected = "%{F#F0C674}%ifname%%{F#707880} disconnected";
+          label-disconnected = "%{F${palette.primary}}%ifname%%{F${palette.disabled}} disconnected";
         };
       };
     };

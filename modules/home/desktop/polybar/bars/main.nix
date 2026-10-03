@@ -1,23 +1,27 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
       config = {
+        # Fonts are set in themes/home.nix.
         "bar/main" = {
           bottom = false;
-          font-0 = "FantasqueSansMono:pixelsize=9;3";
-          font-1 = "Iosevka:pixelsize=9;2";
           width = "100%";
           height = "12pt";
           radius = 0;
-          background = "#3D0F34"; # base01
-          foreground = "#E5E9F0"; # base 05
+          background = palette.background;
+          foreground = palette.foreground;
           line-size = "3pt";
           border-top-size = 0;
           border-right-size = 0;
           border-left-size = 0;
           border-bottom-size = "4pt";
-          border-color = "#3D0F34"; # base 00
+          border-color = palette.background;
           padding-left = 0;
           padding-right = 1;
           module-margin = 1;

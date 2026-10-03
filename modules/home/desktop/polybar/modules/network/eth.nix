@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   imports = [
     ./base.nix
@@ -10,7 +15,7 @@
         "module/eth" = {
           "inherit" = "network-base";
           interface-type = "wired";
-          label-connected = "%{F#F0C674}%ifname%%{F-} %local_ip%";
+          label-connected = "%{F${palette.primary}}%ifname%%{F-} %local_ip%";
         };
       };
     };

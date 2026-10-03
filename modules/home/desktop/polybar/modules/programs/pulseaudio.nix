@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  palette,
+  ...
+}:
 {
   services = {
     polybar = {
@@ -6,10 +11,10 @@
         "module/pulseaudio" = {
           type = "internal/pulseaudio";
           format-volume = "<ramp-volume> <label-volume>";
-          format-volume-foreground = "#BF616A"; # base 0B
+          format-volume-foreground = palette.volume;
           label-volume = "%percentage%%";
           label-muted = "󰝟 ---";
-          label-muted-foreground = "#4C566A"; # base 03
+          label-muted-foreground = palette.volume-muted;
           ramp-volume-0 = "";
           ramp-volume-1 = "󰕾";
           ramp-volume-2 = "";

@@ -37,6 +37,7 @@ modules/
     homelab/               # containers behind an nginx reverse proxy
   home/                    # Home Manager modules
     desktop/               # i3, polybar, picom, alacritty, vscode
+themes/                    # fonts, colors and color themes of the desktops
 secrets/                   # sops-nix setup + encrypted secrets/<hostname>.yaml
 assets/                    # wallpapers
 docs/                      # detailed documentation

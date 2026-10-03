@@ -1,11 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  # VSCode config and extensions.
+  # VSCode config and extensions. Its color theme is in themes/home.nix.
   programs.vscode = {
     enable = true;
-    profiles.default.extensions = with pkgs.vscode-extensions; [
-      dracula-theme.theme-dracula
-    ];
   };
 }
