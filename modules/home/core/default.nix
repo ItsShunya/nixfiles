@@ -82,6 +82,7 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
+  # NOTE: Only update it on clean installs.
   home.stateVersion = "25.11";
 
   # Let home Manager install and manage itself.
