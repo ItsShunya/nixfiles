@@ -15,7 +15,7 @@
   home.packages = with pkgs; [
 
     # Command line tools.
-    neofetch
+    fastfetch
 
     # Archives.
     zip

@@ -34,7 +34,7 @@
     krita
 
     # NixOS dev.
-    nixfmt-rfc-style
+    nixfmt
     pre-commit
   ];
 
