@@ -37,7 +37,8 @@ in
     [
       {
         # This requires a delay otherwise the resolution is not set correctly by feh.
-        command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper2 ~/.wallpaper1";
+        # feh follows xrandr monitor order (DP-1 is 0, DP-2 is 1), not screen position.
+        command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper1 ~/.wallpaper2";
         always = true;
         notification = false;
       }
