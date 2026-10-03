@@ -1,0 +1,13 @@
+# Age recipients, derived from SSH ed25519 public keys with `ssh-to-age`.
+keys:
+  # Admin: ~/.ssh/id_ed25519.pub on shunya-dsktp.
+  - &admin age1wy0sv6q4ujx68xctjwd2rhsjazghc00jedy6pscr2lg3gr9ympestgkkny
+  # Hosts: /etc/ssh/ssh_host_ed25519_key.pub.
+  - &nb250-10n age14rfzd0avnt3j2rdurpttwkwe35dcfn9a403cnzz6fwjaz9ly2etq0zl439
+
+creation_rules:
+  - path_regex: secrets/nb250-10n\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *nb250-10n

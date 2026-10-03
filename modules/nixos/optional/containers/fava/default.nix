@@ -23,10 +23,7 @@
 
       extraOptions = [
         "--network=host"
-        "--privileged"
       ];
     };
   };
 }
-
-

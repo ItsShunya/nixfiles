@@ -5,6 +5,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../../modules/common
+    ../../../secrets
     ../../../modules/nixos/optional/bootloader/grub
     ../../../modules/nixos/optional/network/openssh/server
     #../../../modules/nixos/optional/services/dnsmasq

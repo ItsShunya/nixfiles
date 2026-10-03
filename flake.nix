@@ -10,6 +10,14 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Encrypted secrets, decrypted on the host at activation time.
+    # Pinned: later revisions need Go 1.26, which nixos-25.11 lacks.
+    # Drop the rev once nixpkgs moves to 26.05.
+    sops-nix = {
+      url = "github:Mic92/sops-nix/13616fff713a9f94055c66f15687ebdc17a335df";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -20,6 +28,7 @@
       nixosConfigurations = {
         shunya-dsktp = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/desktop/shunya-dsktp/configuration.nix
 
@@ -36,6 +45,7 @@
 
         nb250-10n = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/server/nb250-10n/configuration.nix
 

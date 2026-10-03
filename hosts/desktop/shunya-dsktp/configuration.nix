@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   wallpaper_src = ../../../bin/images/wallpaper;
@@ -9,7 +14,6 @@ in
     ./hardware-configuration.nix
     ../../../modules/common
     ../../../modules/nixos/optional/bootloader/systemd
-    ../../../modules/nixos/optional/network/openssh/client
   ];
 
   # --- USER ---
@@ -69,14 +73,14 @@ in
 
       # Display manager --> lightDM.
       displayManager = {
-        lightdm =  {
+        lightdm = {
           enable = true;
           greeter.enable = true;
           greeters.gtk.enable = false;
           greeters.mini.enable = false;
           greeters.slick = {
             enable = lib.mkForce true;
-            theme.name = "Arc-Dark";   # example
+            theme.name = "Arc-Dark"; # example
             iconTheme.name = "Papirus";
             draw-user-backgrounds = false;
             extraConfig = ''
