@@ -18,7 +18,7 @@ in
     config = {
       modifier = mod;
 
-      # Fonts are set in themes/home.nix.
+      # Fonts and window colors come from Stylix (themes/).
 
       terminal = "alacritty";
 

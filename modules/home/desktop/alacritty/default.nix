@@ -2,16 +2,16 @@
 
 {
 
-  home.packages = with pkgs; [
-    alacritty
-  ];
-
   # Environment
   home.sessionVariables = {
     TERMINAL = "alacritty";
   };
 
-  # Link the specific Alacritty config.
-  home.file.".config/alacritty/alacritty.toml".source = ./alacritty.toml;
+  # Home Manager writes ~/.config/alacritty/alacritty.toml with the colors and
+  # font from Stylix (themes/), and it imports the hand-written alacritty.toml.
+  programs.alacritty = {
+    enable = true;
+    settings.general.import = [ "${./alacritty.toml}" ];
+  };
 
 }

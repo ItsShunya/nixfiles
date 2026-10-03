@@ -51,7 +51,7 @@ LightDM with the slick greeter starts an Xfce session without its desktop, used 
 | picom | Compositor: fades, shadows, translucent Alacritty | `modules/home/desktop/picom.nix` |
 | feh | Wallpapers, one per monitor, from `assets/wallpaper/` | `hosts/shunya-dsktp/home.nix` |
 | xrandr | Monitor layout, applied at i3 start | `hosts/shunya-dsktp/home.nix` |
-| Theme | Fonts, bar and terminal colors, VS Code theme, login screen look | `themes/` |
+| Theme | Stylix with the Catppuccin Mocha scheme across i3, Polybar, Alacritty, GTK apps, the console and the login screen; Fantasque Sans Mono, Papirus icons. VS Code uses the matching Catppuccin Mocha theme from the marketplace | `themes/` |
 
 ### Programs
 

@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  # VSCode config and extensions. Its color theme is in themes/home.nix.
+  # VSCode itself. Extensions, including the Catppuccin theme, are installed
+  # from the marketplace; see themes/home.nix for why not from here.
   programs.vscode = {
     enable = true;
   };

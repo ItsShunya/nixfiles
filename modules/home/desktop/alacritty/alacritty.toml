@@ -2,9 +2,8 @@
 # commented lines are the defaults
 # man 5 alacritty (>0.13) for full config manual
 
-[general]
-# Colors and font: themes/alacritty.toml, linked here by themes/home.nix.
-import                = [ "~/.config/alacritty/theme.toml" ]
+# Imported by the alacritty.toml Home Manager writes (see default.nix),
+# which adds the colors and font from Stylix (themes/).
 
 #[terminal.shell]
 #program               = "/usr/bin/zsh"

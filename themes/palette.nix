@@ -1,27 +1,41 @@
-# Every color the desktop uses, by role. Home Manager modules read these
-# through the `palette` argument (set in ./home.nix), so changing a value
-# here recolors every place that uses it. The terminal has its own full
-# color scheme in ./alacritty.toml.
+# Colors for the places Stylix doesn't theme itself (Polybar, the i3lock
+# command), by role. Home Manager modules read them through the `palette`
+# argument (set in ./home.nix).
+#
+# Each role is a slot of the Stylix scheme, so switching schemes recolors
+# these too. In base16, base00-base07 run from the darkest background to the
+# lightest foreground, and base08-base0F are accents: red, orange, yellow,
+# green, cyan, blue, magenta, brown.
 {
-  # Bar background, and the text of the focused workspace.
-  background = "#3D0F34";
+  base00,
+  base01,
+  base03,
+  base05,
+  base08,
+  base0A,
+  base0B,
+  ...
+}:
+{
+  # Bar background (base16's status bar slot), and the focused workspace's text.
+  background = base01;
   # Text, and the background of the focused workspace.
-  foreground = "#E5E9F0";
+  foreground = base05;
   # Labels that stand out: network interface and mount point names.
-  primary = "#F0C674";
+  primary = base0A;
   # Inactive state, like a disconnected interface.
-  disabled = "#707880";
+  disabled = base03;
   # Problem state, like a filesystem that isn't mounted.
-  alert = "#FFFFFF";
+  alert = base08;
 
-  # Workspace with an urgent window.
-  urgent-background = "#88C0D0";
-  urgent-foreground = "#2E3440";
+  # Workspace with an urgent window; i3 borders it in the same red.
+  urgent-background = base08;
+  urgent-foreground = base00;
 
   # Volume level, and the muted label.
-  volume = "#BF616A";
-  volume-muted = "#4C566A";
+  volume = base0B;
+  volume-muted = base03;
 
   # i3lock screen.
-  lock = "#222222";
+  lock = base00;
 }
