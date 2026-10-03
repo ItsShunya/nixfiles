@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   wallpaper_src = ../../assets/wallpaper;
@@ -23,6 +23,26 @@ in
   # Link the specific wallpapers to the home directory.
   home.file.".wallpaper1".source = "${wallpaper_src}/sky_sunset_h.jpg";
   home.file.".wallpaper2".source = "${wallpaper_src}/city_sunset_v.jpg";
+
+  xsession.windowManager.i3.config.startup = lib.mkMerge [
+    # Monitor layout first, before the bar and compositor start.
+    (lib.mkBefore [
+      {
+        # Rotated left monitor (DP-2) with DP-1 to its right.
+        command = "xrandr --output DP-2 --rotate left --output DP-1 --right-of DP-2";
+        always = true;
+        notification = false;
+      }
+    ])
+    [
+      {
+        # This requires a delay otherwise the resolution is not set correctly by feh.
+        command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper2 ~/.wallpaper1";
+        always = true;
+        notification = false;
+      }
+    ]
+  ];
 
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage

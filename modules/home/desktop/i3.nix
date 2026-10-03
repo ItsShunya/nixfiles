@@ -58,20 +58,10 @@ in
         smartGaps = true;
       };
 
+      # Monitor layout and wallpaper are set per host, in hosts/<name>/home.nix.
       startup = [
         {
-          command = "xrandr --output DP-2 --rotate left --output DP-1 --right-of DP-2";
-          always = true;
-          notification = false;
-        }
-        {
           command = "firefox";
-        }
-        {
-          # This requires a delay otherwise the resolution is not set correctly by feh.
-          command = "sleep 2 && ${pkgs.feh}/bin/feh --bg-scale ~/.wallpaper2 ~/.wallpaper1";
-          always = true;
-          notification = false;
         }
       ];
 
