@@ -30,13 +30,15 @@ hosts/<name>/
   home.nix                 # Home Manager for user shunya on this host
 profiles/
   base.nix                 # every host
-  desktop.nix              # base + X11/i3, audio, printing, desktop programs
+  desktop.nix              # base + audio, printing, theme, desktop programs (no WM)
+  desktop-niri.nix         # desktop + niri (Wayland), Waybar
+  desktop-i3.nix           # desktop + X11/i3, Polybar, picom
   server.nix               # base + SSH server
 modules/
   nixos/                   # NixOS modules, one file per feature
     homelab/               # containers behind an nginx reverse proxy
   home/                    # Home Manager modules
-    desktop/               # i3, polybar, picom, alacritty, vscode
+    desktop/               # niri, waybar, i3, polybar, picom, alacritty, vscode
 themes/                    # Stylix: color scheme, fonts and icons of the desktops
 secrets/                   # sops-nix setup + encrypted secrets/<hostname>.yaml
 assets/                    # wallpapers
@@ -51,7 +53,7 @@ docs/                      # detailed documentation
 
 Adding a machine typically involves the steps below; [docs/add-host.md](./docs/add-host.md) has the full guide with templates.
 1. Creating `hosts/<name>/` with `default.nix`, `hardware-configuration.nix` and `home.nix`.
-2. Importing `profiles/desktop.nix` or `profiles/server.nix` from `default.nix`.
+2. Importing `profiles/desktop-niri.nix`, `profiles/desktop-i3.nix` or `profiles/server.nix` from `default.nix`.
 3. Adding `<name>` to the host list in `flake.nix` and to the CI matrix in `.github/workflows/build.yml`.
 
 ### Secrets

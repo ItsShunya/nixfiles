@@ -1,6 +1,6 @@
-# Colors for the places Stylix doesn't theme itself (Polybar, the i3lock
-# command), by role. Home Manager modules read them through the `palette`
-# argument (set in ./home.nix).
+# Colors for the places Stylix doesn't theme itself (Polybar, niri, the
+# i3lock command), by role. Home Manager modules read them through the
+# `palette` argument (set in ./home.nix).
 #
 # Each role is a slot of the Stylix scheme, so switching schemes recolors
 # these too. In base16, base00-base07 run from the darkest background to the
@@ -14,6 +14,7 @@
   base08,
   base0A,
   base0B,
+  base0D,
   ...
 }:
 {
@@ -35,6 +36,11 @@
   # Volume level, and the muted label.
   volume = base0B;
   volume-muted = base03;
+
+  # Niri window borders, the same colors Stylix gives i3's.
+  border-active = base0D;
+  border-inactive = base03;
+  border-urgent = base08;
 
   # i3lock screen.
   lock = base00;

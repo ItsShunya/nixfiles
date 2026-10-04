@@ -22,7 +22,8 @@ Install NixOS on the machine with the official installer. Any user and any confi
 
 | The machine… | Profile |
 | --- | --- |
-| has a screen you work on (i3 desktop, audio, printing) | `profiles/desktop.nix` |
+| has a screen you work on, with the niri (Wayland) desktop | `profiles/desktop-niri.nix` |
+| has a screen you work on, with the i3 (X11) desktop | `profiles/desktop-i3.nix` |
 | runs headless and you reach it over SSH | `profiles/server.nix` |
 
 **Firmware type**, which decides the bootloader. On the new machine, run:
@@ -88,7 +89,7 @@ List the disk IDs with `ls -l /dev/disk/by-id/`. Pick the whole disk (no `-partN
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../profiles/desktop.nix
+    ../../profiles/desktop-niri.nix # or ../../profiles/desktop-i3.nix
   ];
 
   boot.loader = {
@@ -120,7 +121,45 @@ You don't set `networking.hostName`: `mkHost` sets it from the folder name.
 }
 ```
 
-**Desktop:** monitor layout, wallpaper and programs only this machine needs:
+**Desktop:** monitor layout, wallpaper and programs only this machine needs. How you set the monitors and wallpaper depends on the profile.
+
+With `desktop-niri.nix`, add them to niri's config:
+
+```nix
+{ pkgs, ... }:
+
+let
+  wallpaper_src = ../../assets/wallpaper;
+in
+{
+  home.sessionVariables = {
+    BROWSER = "firefox";
+  };
+
+  # Programs only this machine needs.
+  home.packages = with pkgs; [
+  ];
+
+  # Appended to the niri config from modules/home/desktop/niri.nix.
+  xdg.configFile."niri/config.kdl".text = ''
+    output "<OUTPUT-1>" {
+        position x=0 y=0
+    }
+    output "<OUTPUT-2>" {
+        position x=<width of OUTPUT-1> y=0
+    }
+
+    spawn-at-startup "${pkgs.swaybg}/bin/swaybg" "-o" "<OUTPUT-1>" "-i" "${wallpaper_src}/sky_sunset_h.jpg" "-m" "fill" "-o" "<OUTPUT-2>" "-i" "${wallpaper_src}/sky_night_v.jpg" "-m" "fill"
+  '';
+
+  # NOTE: Only update it on clean installs.
+  home.stateVersion = "26.05";
+}
+```
+
+Find the monitor names (`DP-1`, `HDMI-A-1`, …) with `niri msg outputs` once the desktop is running. A rotated monitor takes `transform "90"` (or `"270"`) in its `output` block. With a single monitor, drop the `output` blocks and pass one `-i` without `-o` to swaybg.
+
+With `desktop-i3.nix`, set them at i3 start with xrandr and feh:
 
 ```nix
 { lib, pkgs, ... }:
@@ -253,14 +292,16 @@ Create a module and import it from each host that needs it. For example, an NVID
 # hosts/<name>/default.nix
 imports = [
   ./hardware-configuration.nix
-  ../../profiles/desktop.nix
+  ../../profiles/desktop-niri.nix
   ../../modules/nixos/nvidia.nix
 ];
 ```
 
 ### Laptop: Wi-Fi in the status bar
 
-The bar shows the wired interface (`eth`) by default. A laptop can import the unused `wlan` part and override the right side of the bar in its `home.nix`:
+On niri, nothing to do: Waybar's `network` segment shows whichever interface is connected, wired or Wi-Fi.
+
+On i3, Polybar shows the wired interface (`eth`) by default. A laptop can import the unused `wlan` part and override the right side of the bar in its `home.nix`:
 
 ```nix
 { lib, ... }:

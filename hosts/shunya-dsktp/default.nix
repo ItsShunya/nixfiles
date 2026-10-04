@@ -2,7 +2,9 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../profiles/desktop.nix
+    # Niri (Wayland). For i3 (X11) instead, import ../../profiles/desktop-i3.nix:
+    # home.nix keeps the settings for both.
+    ../../profiles/desktop-niri.nix
   ];
 
   boot.loader = {
@@ -10,6 +12,14 @@
     systemd-boot.configurationLimit = 5;
     efi.canTouchEfiVariables = true;
   };
+
+  # Login screen on the main monitor only. Appended to the greeter's niri
+  # config from modules/nixos/niri.nix.
+  environment.etc."greetd/niri.kdl".text = ''
+    output "DP-2" {
+        off
+    }
+  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

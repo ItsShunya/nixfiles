@@ -14,7 +14,7 @@ The machines managed by this repository, what each one is for, and what runs on 
          │                                                             │
 ┌────────┴─────────────┐   nixos-rebuild --target-host   ┌─────────────┴──────────────────┐
 │ shunya-dsktp         │ ──────────── SSH :22 ─────────► │ nb250-10n                      │
-│ i3 desktop           │                                 │ nginx :80                      │
+│ niri desktop         │                                 │ nginx :80                      │
 │ builds every host    │                                 │  ├ home.shunya.lan   → :8123   │
 │ holds the sops       │ ─── browser http://*.shunya.lan │  ├ fava.shunya.lan   → :5000   │
 │ admin key            │ ──────────────────────────────► │  └ museum.shunya.lan → :8081   │
@@ -34,7 +34,7 @@ The machines managed by this repository, what each one is for, and what runs on 
 
 | | |
 | --- | --- |
-| Configuration | [`hosts/shunya-dsktp/`](../hosts/shunya-dsktp) · profile [`desktop`](../profiles/desktop.nix) |
+| Configuration | [`hosts/shunya-dsktp/`](../hosts/shunya-dsktp) · profile [`desktop-niri`](../profiles/desktop-niri.nix) |
 | Hardware | Intel CPU, NVMe SSD (ext4 root, no swap), UEFI firmware |
 | Boot | systemd-boot, keeps the last 5 generations |
 | Displays | Two monitors: `DP-2` rotated left (portrait), `DP-1` to its right |
@@ -42,22 +42,29 @@ The machines managed by this repository, what each one is for, and what runs on 
 
 ### Desktop session
 
-LightDM with the slick greeter starts an Xfce session without its desktop, used only for Xfce's tools, running the **i3** window manager. On top of that:
+The desktop runs **niri**, a scrolling tiling Wayland compositor, through the [`desktop-niri`](../profiles/desktop-niri.nix) profile. The ReGreet greeter (on greetd) starts it. X11 programs such as Krita run through xwayland-satellite, which niri starts when one opens. Electron apps (VS Code, GitKraken) run on Wayland directly.
 
 | Component | What it does | Configured in |
 | --- | --- | --- |
-| i3 | Tiling window manager: gaps, keybindings, Firefox autostart | `modules/home/desktop/i3.nix` |
-| Polybar | Status bar: power, date, workspaces on the left; memory, CPU, Ethernet, volume, hostname, kernel on the right | `modules/home/desktop/polybar/` |
-| picom | Compositor: fades, shadows, translucent Alacritty | `modules/home/desktop/picom.nix` |
-| feh | Wallpapers, one per monitor, from `assets/wallpaper/` | `hosts/shunya-dsktp/home.nix` |
-| xrandr | Monitor layout, applied at i3 start | `hosts/shunya-dsktp/home.nix` |
-| Theme | Stylix with the Catppuccin Mocha scheme across i3, Polybar, Alacritty, GTK apps, the console and the login screen; Fantasque Sans Mono, Papirus icons. VS Code uses the matching Catppuccin Mocha theme from the marketplace | `themes/` |
+| niri | Compositor and window manager: gaps, borders, shadows, translucent Alacritty, keybindings, Firefox autostart | `modules/home/desktop/niri.nix` |
+| Waybar | Status bar, with the same segments Polybar had: power, date, workspaces on the left; window title in the centre; memory, CPU, network, volume, hostname, kernel on the right | `modules/home/desktop/waybar.nix` |
+| ReGreet | Login screen, running in its own niri instance (not cage, which spreads it over every monitor). Shown on `DP-1` only: the greeter's niri config turns `DP-2` off. Stylix warns about this custom greetd command on every rebuild; the theme still applies | `modules/nixos/niri.nix`, `DP-2` setting in `hosts/shunya-dsktp/default.nix` |
+| fuzzel, swaylock, mako | App launcher (`Mod+D`), lock screen (`Mod+Shift+X`), notifications | `modules/home/desktop/niri.nix` |
+| swaybg | Wallpapers, one per monitor, from `assets/wallpaper/` | `hosts/shunya-dsktp/home.nix` |
+| niri `output` blocks | Monitor layout: `DP-2` rotated (`transform "90"`) at the left, `DP-1` to its right | `hosts/shunya-dsktp/home.nix` |
+| Theme | Stylix with the Catppuccin Mocha scheme across Waybar, fuzzel, swaylock, mako, Alacritty, GTK apps, the console and the login screen; niri's border colors come from `themes/palette.nix`. Fantasque Sans Mono, Papirus icons. VS Code uses the matching Catppuccin Mocha theme from the marketplace | `themes/` |
+
+`Mod+F1` lists every keybinding. They follow the old i3 ones where i3 had one (`Mod+Return` terminal, `Mod+Shift+Q` close, arrows to focus and with `Shift` to move, `Mod+Ctrl+←/→` to send a workspace to the other monitor, `Mod+X` screenshot to the clipboard). Niri reloads `~/.config/niri/config.kdl` by itself after a switch, so there's no reload key.
+
+#### Going back to i3
+
+The i3 setup (LightDM, i3, Polybar, picom, feh, xrandr) is still in the repository, only inactive on this host. To use it again, change the profile import in [`hosts/shunya-dsktp/default.nix`](../hosts/shunya-dsktp/default.nix) from `desktop-niri.nix` to `desktop-i3.nix` and switch. `home.nix` keeps the monitor and wallpaper settings for both, in two marked sections. Each profile only reads its own section.
 
 ### Programs
 
 | Kind | Programs |
 | --- | --- |
-| Everyday | Firefox, Alacritty, Thunar, VS Code |
+| Everyday | Firefox, Alacritty, Thunar (with gvfs and tumbler), VS Code |
 | Development | GitKraken, git, neovim |
 | Graphics | Krita |
 | Working on this repo | `nixfmt`, `pre-commit` |

@@ -22,7 +22,26 @@ in
 
   # Link the specific wallpapers to the home directory.
   home.file.".wallpaper1".source = "${wallpaper_src}/sky_sunset_h.jpg";
-  home.file.".wallpaper2".source = "${wallpaper_src}/city_sunset_v.jpg";
+  home.file.".wallpaper2".source = "${wallpaper_src}/wallpaper2.jpg";
+
+  # --- NIRI (active: default.nix imports profiles/desktop-niri.nix) ---
+
+  # Appended to the niri config from modules/home/desktop/niri.nix.
+  # Output names come from `niri msg outputs`.
+  xdg.configFile."niri/config.kdl".text = ''
+    // Rotated left monitor (DP-2) with DP-1 to its right.
+    output "DP-2" {
+        transform "90"
+        position x=0 y=0
+    }
+    output "DP-1" {
+        position x=1080 y=0
+    }
+
+    spawn-at-startup "${pkgs.swaybg}/bin/swaybg" "-o" "DP-1" "-i" "${wallpaper_src}/sky_sunset_h.jpg" "-m" "fill" "-o" "DP-2" "-i" "${wallpaper_src}/wallpaper2.jpg" "-m" "fill"
+  '';
+
+  # --- I3 (inactive: used again if default.nix imports profiles/desktop-i3.nix) ---
 
   xsession.windowManager.i3.config.startup = lib.mkMerge [
     # Monitor layout first, before the bar and compositor start.

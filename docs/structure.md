@@ -22,7 +22,9 @@ Each layer only builds on the one below it: hosts import a profile, and profiles
 │   └── nb250-10n/            # notebook acting as a server
 ├── profiles/
 │   ├── base.nix              # every host
-│   ├── desktop.nix           # base + graphical session, audio, printing
+│   ├── desktop.nix           # base + audio, printing, theme, desktop apps (no window manager)
+│   ├── desktop-niri.nix      # desktop + niri (Wayland)
+│   ├── desktop-i3.nix        # desktop + i3 (X11)
 │   └── server.nix            # base + SSH server
 ├── modules/
 │   ├── nixos/                # NixOS modules (system level)
@@ -91,10 +93,10 @@ Home Manager runs **as a NixOS module** here. There is no separate `home-manager
 **The two systems don't mix in `imports`.** A Home Manager module listed in a NixOS `imports` (or the other way round) fails with "option does not exist". The bridge is the NixOS option `home-manager.users.shunya.imports`, which takes a list of Home Manager modules. Profiles use it to pull in the user side of their role:
 
 ```nix
-# profiles/desktop.nix (NixOS module)
+# profiles/desktop-niri.nix (NixOS module)
 {
-  imports = [ ../modules/nixos/x11.nix ];                          # NixOS modules
-  home-manager.users.shunya.imports = [ ../modules/home/desktop/i3.nix ];  # Home Manager modules
+  imports = [ ../modules/nixos/niri.nix ];                            # NixOS modules
+  home-manager.users.shunya.imports = [ ../modules/home/desktop/niri.nix ];  # Home Manager modules
 }
 ```
 
@@ -142,10 +144,12 @@ A profile describes a kind of machine by listing the modules it gets, on both th
 | Profile | Imports | Home Manager |
 | --- | --- | --- |
 | `base.nix` | nix, locale, networking, zsh, user, packages | `base.nix`, `git.nix` |
-| `desktop.nix` | `base.nix` + x11, audio, printing, `themes/` | i3, polybar, picom, alacritty, vscode, `themes/home.nix` |
+| `desktop.nix` | `base.nix` + desktop-programs, audio, printing, `themes/` | alacritty, vscode, `themes/home.nix` |
+| `desktop-niri.nix` | `desktop.nix` + niri | niri, waybar |
+| `desktop-i3.nix` | `desktop.nix` + x11 | i3, polybar, picom |
 | `server.nix` | `base.nix` + ssh | (nothing beyond base) |
 
-A host imports exactly one of `desktop.nix` or `server.nix`, never `base.nix` directly. If a new kind of machine appears (say a laptop that's a desktop plus Wi-Fi and battery tweaks), create `profiles/laptop.nix` that imports `./desktop.nix` and adds the extras.
+A host imports exactly one of `desktop-niri.nix`, `desktop-i3.nix` or `server.nix`, never `base.nix` or `desktop.nix` directly. `desktop.nix` is everything a workstation gets whatever its window manager, and the two `desktop-*` profiles add one window manager each. Switching a desktop between niri and i3 is changing that one import. If a new kind of machine appears (say a laptop that's a desktop plus Wi-Fi and battery tweaks), create `profiles/laptop.nix` that imports `./desktop-niri.nix` and adds the extras.
 
 ### `modules/nixos/`
 
@@ -159,7 +163,9 @@ System-level modules, one feature per file. A module is switched on by importing
 | `zsh.nix` | zsh as the default shell for every user | base |
 | `user.nix` | The `shunya` account: groups, default shell, neovim | base |
 | `packages.nix` | System-wide basics (`git`, `wget`) and `nix-ld` for running foreign binaries | base |
-| `x11.nix` | X server, Spanish keyboard layout, i3 inside an Xfce session, LightDM + slick greeter, Firefox, Thunar, polkit | desktop |
+| `desktop-programs.nix` | Firefox, Thunar with gvfs and tumbler, dconf, polkit | desktop |
+| `niri.nix` | The niri Wayland session, greetd + ReGreet running in a greeter-only niri (`/etc/greetd/niri.kdl`, which hosts can append `output` blocks to), Wayland for Electron apps | desktop-niri |
+| `x11.nix` | X server, Spanish keyboard layout, i3 inside an Xfce session, LightDM + slick greeter | desktop-i3 |
 | `audio.nix` | PipeWire with PulseAudio and ALSA compatibility | desktop |
 | `printing.nix` | CUPS | desktop |
 | `ssh.nix` | OpenSSH server, key-only login, the authorized keys for `shunya` | server |
@@ -185,9 +191,11 @@ User-level (Home Manager) modules.
 | --- | --- | --- |
 | `base.nix` | Everyday CLI tools (archives, networking, tracing, `fastfetch`…), `EDITOR=nvim`, bash settings | base |
 | `git.nix` | Git identity | base |
-| `desktop/i3.nix` | i3 settings: gaps, keybindings, Firefox autostart | desktop |
-| `desktop/polybar/` | The status bar (see below) | desktop |
-| `desktop/picom.nix` | Compositor: fades, shadows, Alacritty opacity | desktop |
+| `desktop/niri.nix` | Niri's `config.kdl` (input, layout, window rules, keybindings, Firefox autostart), xwayland-satellite, fuzzel, swaylock, mako, the polkit agent | desktop-niri |
+| `desktop/waybar.nix` | The niri status bar, with Polybar's segments | desktop-niri |
+| `desktop/i3.nix` | i3 settings: gaps, keybindings, Firefox autostart | desktop-i3 |
+| `desktop/polybar/` | The i3 status bar (see below) | desktop-i3 |
+| `desktop/picom.nix` | X11 compositor: fades, shadows, Alacritty opacity | desktop-i3 |
 | `desktop/alacritty/` | Terminal: `default.nix` enables it; the generated config imports the hand-written `alacritty.toml` (colors and font come from Stylix) | desktop |
 | `desktop/vscode.nix` | VS Code | desktop |
 
@@ -200,6 +208,8 @@ User-level (Home Manager) modules.
 
 Some parts (`wlan`, `filesystem`, `xkeyboard`, `whoami`) aren't used yet. To use one, import it in `default.nix` (or in a host's `home.nix` for one machine only) and add its name to the bar.
 
+**Niri** has no Home Manager module, so `niri.nix` writes `~/.config/niri/config.kdl` as KDL text. That option is a list of lines, so other modules can add to it: a niri host appends its `output` blocks and wallpaper command from its `home.nix`. Check the result with `niri validate`.
+
 ### `themes/`
 
 How the desktops look. [Stylix](https://github.com/nix-community/stylix) takes one [base16](https://github.com/tinted-theming/home) color scheme (16 colors, `base00`–`base0F`) and a set of fonts, and writes them into the config of every program it has a *target* for. Programs are *configured* in `modules/`; how they *look* comes from here. Only `profiles/desktop.nix` imports it, so servers never load Stylix.
@@ -208,7 +218,7 @@ How the desktops look. [Stylix](https://github.com/nix-community/stylix) takes o
 | --- | --- | --- |
 | `default.nix` | NixOS module | Imports Stylix and sets the scheme (Catppuccin Mocha), fonts, icon theme (Papirus), login screen background, and the system-side targets. Also extra font packages and the greeter's GTK theme |
 | `home.nix` | Home Manager module | The user-side targets, Polybar's fonts, and the `palette` argument |
-| `palette.nix` | Function of the scheme | Colors for what Stylix doesn't theme (Polybar, the i3lock command), named by role and mapped to scheme slots |
+| `palette.nix` | Function of the scheme | Colors for what Stylix doesn't theme (Polybar, niri's window borders, the i3lock command), named by role and mapped to scheme slots |
 
 Stylix runs as a NixOS module, and it sets up its Home Manager half for `shunya` automatically with the same scheme, fonts and icons. Only the target switches are separate, which is why `home.nix` has its own list.
 
@@ -216,16 +226,16 @@ Stylix runs as a NixOS module, and it sets up its Home Manager half for `shunya`
 
 | Side | Targets |
 | --- | --- |
-| NixOS (`default.nix`) | `console` (TTY colors), `font-packages`, `fontconfig` (default fonts), `gtk` (dconf), `lightdm` (background) |
-| Home Manager (`home.nix`) | `alacritty`, `gtk` (GTK 2/3/4 apps such as Thunar), `i3` (window borders, font) |
+| NixOS (`default.nix`) | `console` (TTY colors), `font-packages`, `fontconfig` (default fonts), `gtk` (dconf), `lightdm` (background, i3 desktops), `regreet` (login screen, niri desktops) |
+| Home Manager (`home.nix`) | `alacritty`, `gtk` (GTK 2/3/4 apps such as Thunar), `i3` (window borders, font), `waybar`, `fuzzel`, `swaylock`, `mako` |
 
-Left on, Stylix also themes programs that aren't installed (GNOME, KDE, Blender…), and a weekly flake update could switch on new targets. `feh` stays off because each host sets its own wallpaper per monitor.
+Left on, Stylix also themes programs that aren't installed (GNOME, KDE, Blender…), and a weekly flake update could switch on new targets. `feh` stays off because each host sets its own wallpaper per monitor. A target only takes effect where its program is enabled, so the i3 and niri targets can both stay on: each desktop uses the ones for its profile.
 
 **VS Code** is not a Stylix target. Stylix themes it with an extension, and once Home Manager installs any extension it rewrites `extensions.json` whenever that extension changes; VS Code then deletes every extension installed from the marketplace. VS Code uses the "Catppuccin Mocha" theme from the marketplace instead, which matches the scheme.
 
 **Alacritty** is enabled with `programs.alacritty`. Home Manager writes `~/.config/alacritty/alacritty.toml` with Stylix's colors and font, and that file imports the hand-written `modules/home/desktop/alacritty/alacritty.toml` for everything else.
 
-**Polybar and i3lock** have no Stylix target. Their colors come from `palette`, a module argument that `home.nix` builds from the active scheme:
+**Polybar, niri and i3lock** have no Stylix target. Their colors come from `palette`, a module argument that `home.nix` builds from the active scheme:
 
 ```nix
 # themes/palette.nix: role = scheme slot
@@ -323,6 +333,8 @@ Pull requests opened by the update workflow only trigger `build.yml` if a `FLAKE
 | Add a password or token | `secrets/<host>.yaml` via `sops`, declared with `sops.secrets` in the module that uses it |
 | Add a driver used by some machines (NVIDIA, Wi-Fi firmware) | A new `modules/nixos/<driver>.nix`, imported by those hosts |
 | Change a monitor layout, wallpaper or bar for one machine | That host's `home.nix` |
+| Switch a desktop between niri and i3 | The profile import in that host's `default.nix`: `desktop-niri.nix` or `desktop-i3.nix` |
+| Change a niri keybinding or window rule | `modules/home/desktop/niri.nix` |
 | Change the color scheme, fonts, icons or login screen background | `stylix` in `themes/default.nix` |
 | Change which scheme color the bar or lock screen uses | `themes/palette.nix` |
 | Theme a newly added program | Enable its Stylix target in `themes/home.nix` (or `themes/default.nix` for system targets); if Stylix has none, read colors from `palette` |

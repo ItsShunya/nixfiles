@@ -49,7 +49,9 @@
       font-packages.enable = true;
       fontconfig.enable = true;
       gtk.enable = true;
+      # Login screen: LightDM on i3 desktops, ReGreet on niri ones.
       lightdm.enable = true;
+      regreet.enable = true;
     };
   };
 

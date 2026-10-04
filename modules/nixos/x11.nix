@@ -65,17 +65,4 @@
 
     displayManager.defaultSession = "xfce+i3";
   };
-
-  # --- PROGRAMS ---
-
-  programs = {
-    firefox.enable = true;
-    thunar.enable = true;
-    dconf.enable = true; # Necessary to save some configs after reboot.
-  };
-
-  security = {
-    polkit.enable = true;
-    rtkit.enable = true;
-  };
 }
