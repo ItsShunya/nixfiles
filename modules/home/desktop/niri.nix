@@ -54,6 +54,16 @@ in
         skip-at-startup
     }
 
+    // Every window: rounded corners like the bar's, and no maximizing to the
+    // screen edges, which drops gaps and borders. Firefox and VS Code ask for
+    // it when they last closed maximized; Mod+M still maximizes the column
+    // within the gaps.
+    window-rule {
+        geometry-corner-radius 6
+        clip-to-geometry true
+        open-maximized-to-edges false
+    }
+
     // Translucent Alacritty, as picom does on i3.
     window-rule {
         match app-id="^Alacritty$"
