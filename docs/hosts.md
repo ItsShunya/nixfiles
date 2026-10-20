@@ -47,12 +47,13 @@ The desktop runs **niri**, a scrolling tiling Wayland compositor, through the [`
 | Component | What it does | Configured in |
 | --- | --- | --- |
 | niri | Compositor and window manager: gaps, borders, shadows, translucent Alacritty, keybindings, Firefox autostart | `modules/home/desktop/niri.nix` |
-| Waybar | Status bar, with the same segments Polybar had: power, date, workspaces on the left; window title in the centre; memory, CPU, network, volume, hostname, kernel on the right | `modules/home/desktop/waybar.nix` |
+| Waybar | Status bar, with the same segments Polybar had: power (opens a rofi menu: lock, suspend, log out, reboot, shut down), date, workspaces on the left; window title in the centre; memory, CPU, network, volume, hostname, kernel on the right | `modules/home/desktop/waybar.nix` |
 | ReGreet | Login screen, running in its own niri instance (not cage, which spreads it over every monitor). Shown on `DP-1` only: the greeter's niri config turns `DP-2` off. Stylix warns about this custom greetd command on every rebuild; the theme still applies | `modules/nixos/niri.nix`, `DP-2` setting in `hosts/shunya-dsktp/default.nix` |
-| fuzzel, swaylock, mako | App launcher (`Mod+D`), lock screen (`Mod+Shift+X`), notifications | `modules/home/desktop/niri.nix` |
+| rofi | App launcher (`Mod+D`) and the power menu, themed to match Waybar | `modules/home/desktop/rofi.nix` |
+| swaylock, mako | Lock screen (`Mod+Shift+X`), notifications | `modules/home/desktop/niri.nix` |
 | swaybg | Wallpapers, one per monitor, from `assets/wallpaper/` | `hosts/shunya-dsktp/home.nix` |
 | niri `output` blocks | Monitor layout: `DP-2` rotated (`transform "90"`) at the left, `DP-1` to its right | `hosts/shunya-dsktp/home.nix` |
-| Theme | Stylix with the Catppuccin Mocha scheme across Waybar, fuzzel, swaylock, mako, Alacritty, GTK apps, the console and the login screen; niri's border colors come from `themes/palette.nix`. Fantasque Sans Mono, Papirus icons. VS Code uses the matching Catppuccin Mocha theme from the marketplace | `themes/` |
+| Theme | Stylix with the Catppuccin Mocha scheme across Waybar, swaylock, mako, Alacritty, GTK apps, the console and the login screen; niri's border colors come from `themes/palette.nix`, and rofi has its own theme in the same colors. Fantasque Sans Mono, Papirus icons. VS Code uses the matching Catppuccin Mocha theme from the marketplace | `themes/` |
 
 `Mod+F1` lists every keybinding. They follow the old i3 ones where i3 had one (`Mod+Return` terminal, `Mod+Shift+Q` close, arrows to focus and with `Shift` to move, `Mod+Ctrl+←/→` to send a workspace to the other monitor, `Mod+X` screenshot to the clipboard). Niri reloads `~/.config/niri/config.kdl` by itself after a switch, so there's no reload key.
 

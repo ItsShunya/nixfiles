@@ -80,7 +80,7 @@ in
         Mod+F1 { show-hotkey-overlay; }
 
         Mod+Return hotkey-overlay-title="Open a terminal: alacritty" { spawn "alacritty"; }
-        Mod+D hotkey-overlay-title="Run an application: fuzzel" { spawn "fuzzel"; }
+        Mod+D hotkey-overlay-title="Run an application: rofi" { spawn "rofi" "-show" "drun"; }
         Mod+X hotkey-overlay-title="Screenshot to clipboard" { screenshot; }
         Mod+Shift+X hotkey-overlay-title="Lock the screen: swaylock" { spawn-sh "swaylock -f && niri msg action power-off-monitors"; }
 
@@ -156,8 +156,8 @@ in
     wl-clipboard
   ];
 
-  # Launcher, lock screen and notifications. Their look comes from Stylix.
-  programs.fuzzel.enable = true;
+  # Lock screen and notifications. Their look comes from Stylix; the
+  # launcher is rofi, in ./rofi.nix.
   programs.swaylock.enable = true;
   services.mako.enable = true;
 

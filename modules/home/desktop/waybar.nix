@@ -1,6 +1,28 @@
-{ lib, palette, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  palette,
+  ...
+}:
 
 let
+  # Asks in rofi (themed in ./rofi.nix) what to do, then does it. Escape
+  # closes it doing nothing.
+  powerMenu = pkgs.writeShellScript "power-menu" ''
+    choice=$(printf '%s\n' "󰌾  Lock" "󰤄  Suspend" "󰍃  Logout" "󰜉  Reboot" "󰐥  Shutdown" \
+      | ${config.programs.rofi.finalPackage}/bin/rofi -dmenu -i -no-custom -p "󰐥" \
+        -theme-str 'window { width: 280px; } listview { lines: 5; } entry { placeholder: "Power"; }') \
+      || exit 0
+    case "$choice" in
+      *Lock) swaylock -f ;;
+      *Suspend) systemctl suspend ;;
+      *Logout) niri msg action quit --skip-confirmation ;;
+      *Reboot) systemctl reboot ;;
+      *Shutdown) systemctl poweroff ;;
+    esac
+  '';
+
   # Wraps a Nerd Font icon in the accent color, before the module's text.
   # Icons are Material Design ones (U+F0000 and up, "nf-md-*").
   icon = glyph: "<span color='${palette.primary}'>${glyph}</span>";
@@ -40,6 +62,7 @@ in
 
       "custom/power" = {
         format = "󰐥";
+        on-click = "${powerMenu}";
         tooltip = false;
       };
 

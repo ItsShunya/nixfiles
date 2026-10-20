@@ -8,5 +8,6 @@
   home-manager.users.shunya.imports = [
     ../modules/home/desktop/niri.nix
     ../modules/home/desktop/waybar.nix
+    ../modules/home/desktop/rofi.nix
   ];
 }

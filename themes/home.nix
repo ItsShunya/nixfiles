@@ -12,10 +12,10 @@
     alacritty.enable = true;
     gtk.enable = true;
     i3.enable = true;
-    # The niri session's bar, launcher, lock screen and notifications. Niri
-    # itself has no target: its border colors come from the palette.
+    # The niri session's bar, lock screen and notifications. Niri itself has
+    # no target: its border colors come from the palette. Rofi isn't one
+    # either: it has its own theme, in modules/home/desktop/rofi.nix.
     waybar.enable = true;
-    fuzzel.enable = true;
     swaylock.enable = true;
     mako.enable = true;
     # Not vscode: its theme is an extension, and once Home Manager installs

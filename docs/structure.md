@@ -191,8 +191,9 @@ User-level (Home Manager) modules.
 | --- | --- | --- |
 | `base.nix` | Everyday CLI tools (archives, networking, tracing, `fastfetch`…), `EDITOR=nvim`, bash settings | base |
 | `git.nix` | Git identity | base |
-| `desktop/niri.nix` | Niri's `config.kdl` (input, layout, window rules, keybindings, Firefox autostart), xwayland-satellite, fuzzel, swaylock, mako, the polkit agent | desktop-niri |
+| `desktop/niri.nix` | Niri's `config.kdl` (input, layout, window rules, keybindings, Firefox autostart), xwayland-satellite, swaylock, mako, the polkit agent | desktop-niri |
 | `desktop/waybar.nix` | The niri status bar, with Polybar's segments | desktop-niri |
+| `desktop/rofi.nix` | App launcher and power menu, with a theme matching the bar | desktop-niri |
 | `desktop/i3.nix` | i3 settings: gaps, keybindings, Firefox autostart | desktop-i3 |
 | `desktop/polybar/` | The i3 status bar (see below) | desktop-i3 |
 | `desktop/picom.nix` | X11 compositor: fades, shadows, Alacritty opacity | desktop-i3 |
@@ -227,7 +228,7 @@ Stylix runs as a NixOS module, and it sets up its Home Manager half for `shunya`
 | Side | Targets |
 | --- | --- |
 | NixOS (`default.nix`) | `console` (TTY colors), `font-packages`, `fontconfig` (default fonts), `gtk` (dconf), `lightdm` (background, i3 desktops), `regreet` (login screen, niri desktops) |
-| Home Manager (`home.nix`) | `alacritty`, `gtk` (GTK 2/3/4 apps such as Thunar), `i3` (window borders, font), `waybar`, `fuzzel`, `swaylock`, `mako` |
+| Home Manager (`home.nix`) | `alacritty`, `gtk` (GTK 2/3/4 apps such as Thunar), `i3` (window borders, font), `waybar`, `swaylock`, `mako` |
 
 Left on, Stylix also themes programs that aren't installed (GNOME, KDE, Blender…), and a weekly flake update could switch on new targets. `feh` stays off because each host sets its own wallpaper per monitor. A target only takes effect where its program is enabled, so the i3 and niri targets can both stay on: each desktop uses the ones for its profile.
 
