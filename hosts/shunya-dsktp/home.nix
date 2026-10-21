@@ -33,6 +33,10 @@ in
     output "DP-2" {
         transform "90"
         position x=0 y=0
+        // Too narrow for side-by-side columns: new windows fill the width.
+        layout {
+            default-column-width { proportion 1.0; }
+        }
     }
     output "DP-1" {
         position x=1080 y=0
