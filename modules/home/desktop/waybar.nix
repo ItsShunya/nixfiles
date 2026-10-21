@@ -23,14 +23,14 @@ let
     esac
   '';
 
-  # Wraps a Nerd Font icon in the accent color, before the module's text.
+  # Wraps a Nerd Font icon in the accent color, a size up from the text so it
+  # reads at a glance.
   # Icons are Material Design ones (U+F0000 and up, "nf-md-*").
-  icon = glyph: "<span color='${palette.primary}'>${glyph}</span>";
+  icon = glyph: "<span color='${palette.primary}' size='larger'>${glyph}</span>";
 in
 {
   # Status bar for niri: one floating bar over the wallpaper, inset from the
-  # screen edges. Colors and fonts come from Stylix; the icon accents from
-  # the palette.
+  # screen edges. Colors come from Stylix, the icon accent from the palette.
   programs.waybar = {
     enable = true;
     # Started and stopped with the niri session.
@@ -44,31 +44,27 @@ in
       margin-top = 10;
       margin-left = 10;
       margin-right = 10;
-      spacing = 2;
+      spacing = 12;
 
-      modules-left = [
-        "custom/power"
-        "niri/workspaces"
-        "clock"
-      ];
+      modules-left = [ "niri/workspaces" ];
+      modules-center = [ "clock" ];
       modules-right = [
         "cpu"
         "memory"
         "network"
         "pulseaudio"
-        "custom/hostname"
-        "custom/uname"
+        "custom/power"
       ];
 
       "custom/power" = {
-        format = "󰐥";
+        format = icon "󰐥";
         on-click = "${powerMenu}";
         tooltip = false;
       };
 
       # One dot per workspace, filled for the active one.
       "niri/workspaces" = {
-        format = "{icon}";
+        format = "<span size='larger'>{icon}</span>";
         format-icons = {
           default = "󰝦";
           active = "󰝥";
@@ -76,57 +72,52 @@ in
       };
 
       clock = {
-        format = "${icon "󰥔"} {:%d %b %I:%M %p}";
-        format-alt = "${icon "󰥔"} {:%Y-%m-%d %H:%M:%S}";
+        format = "{:%d %b %H:%M}";
+        format-alt = "{:%Y-%m-%d %H:%M:%S}";
         interval = 1;
         tooltip = false;
       };
 
       cpu = {
         interval = 2;
-        format = "${icon "󰻠"} {usage:2}%";
+        format = "${icon "󰓅"} {usage:2}%";
       };
 
+      # In GiB, as "5.3GB/31GB".
       memory = {
         interval = 2;
-        format = "${icon "󰍛"} {percentage:2}%";
+        format = "${icon "󰍛"} {used:0.1f}GB/{total:0.0f}GB";
       };
 
       network = {
         interval = 5;
-        format-ethernet = "${icon "󰈀"} {ipaddr}";
-        format-wifi = "${icon "󰖩"} {essid} {ipaddr}";
-        format-disconnected = "<span color='${palette.disabled}'>󰖪 disconnected</span>";
+        format-ethernet = icon "󰈀";
+        format-wifi = "${icon "󰖩"} {essid}";
+        format-disconnected = "${icon "󰖪"} <span color='${palette.disabled}'>disconnected</span>";
         tooltip-format = "{ifname}";
       };
 
       pulseaudio = {
-        format = "<span color='${palette.volume}'>{icon}</span> {volume}%";
-        format-muted = "<span color='${palette.volume-muted}'>󰝟 muted</span>";
+        format = "${icon "{icon}"} {volume}%";
+        format-muted = "${icon "󰝟"} <span color='${palette.disabled}'>muted</span>";
         format-icons.default = [
           "󰕿"
           "󰖀"
           "󰕾"
         ];
       };
-
-      "custom/hostname" = {
-        exec = "cat /etc/hostname";
-        format = "${icon "󰍹"} {}";
-        interval = "once";
-        tooltip = false;
-      };
-
-      "custom/uname" = {
-        exec = "echo $(uname -r | tr - . | cut -d. -f1-2)";
-        format = "${icon "󰌽"} {}";
-        interval = "once";
-        tooltip = false;
-      };
     };
 
     # After Stylix's color definitions (@base00…@base0F) and font.
     style = lib.mkAfter ''
+      /* Replaces Stylix's monospace font for the bar. The Propo variant
+         gives icons their real width instead of squeezing them into one
+         cell, so they no longer run into the text next to them. */
+      * {
+          font-family: "JetBrainsMono Nerd Font Propo";
+          font-weight: 600;
+      }
+
       window#waybar {
           background: alpha(@base00, 0.85);
           border: 1px solid alpha(@base03, 0.5);
@@ -139,14 +130,10 @@ in
       }
 
       .modules-left > widget > *,
+      .modules-center > widget > *,
       .modules-right > widget > * {
           padding: 0 8px;
           color: @base05;
-      }
-
-      #custom-power {
-          color: @base0D;
-          padding: 0 10px 0 6px;
       }
 
       #workspaces {
@@ -169,7 +156,7 @@ in
       }
 
       #workspaces button.active {
-          color: @base0D;
+          color: @base0A;
       }
 
       #workspaces button.urgent {
