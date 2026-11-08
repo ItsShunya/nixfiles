@@ -61,7 +61,7 @@ flake.nix  mkHost "nb250-10n"
 │   │   │   └── home: modules/home/{base,git}.nix      ──┐
 │   │   └── modules/nixos/ssh.nix                         │
 │   ├── secrets/                                          │ merged into the
-│   └── modules/nixos/homelab/{home-assistant,fava,omeka}.nix  Home Manager config
+│   └── modules/nixos/homelab/{home-assistant,fava,omeka,wa-bridge}.nix  Home Manager config
 └── hosts/nb250-10n/home.nix                          ────┘ of user shunya
 ```
 
@@ -179,7 +179,7 @@ Self-hosted services, each running as a Docker container (`virtualisation.oci-co
   - `homelab.proxies.<name>.port`
 
   For every entry in `homelab.proxies` it generates an nginx virtual host `<name>.<domain>` that proxies to `127.0.0.1:<port>`. It also opens port 80, selects the Docker backend, and adds `shunya` to the `docker` group.
-- **One file per service** (`home-assistant.nix`, `fava.nix`, `omeka.nix`). Each one imports `./common.nix`, registers its proxy, and defines its containers. Importing a service file from a host is what deploys it there.
+- **One file per service** (`home-assistant.nix`, `fava.nix`, `omeka.nix`, `wa-bridge.nix`). Each one imports `./common.nix`, registers its proxy, and defines its containers. Importing a service file from a host is what deploys it there.
 
 Services are only reachable through nginx. Containers publish their ports on `127.0.0.1` (or use `--network=host` with the firewall closed), and only port 80 is open. Secrets that a container needs come from sops (see `omeka.nix` for the `sops.templates` pattern that renders an env file).
 

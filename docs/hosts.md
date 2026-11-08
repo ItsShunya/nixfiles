@@ -105,12 +105,14 @@ All services run as Docker containers managed by NixOS (`virtualisation.oci-cont
 | **Omeka S** ("Shunya's museum" collection site) | http://museum.shunya.lan | `omeka` | `giocomai/omeka-s-docker:v4.2.0` | Docker volume `omeka` |
 | MariaDB (Omeka's database) | internal only | `omeka_mariadb` | `mariadb:latest` | Docker volume `omeka_mariadb` |
 | phpMyAdmin (database admin) | via SSH tunnel | `omeka_pma` | `phpmyadmin/phpmyadmin:latest` | none |
+| WhatsApp bridge (Home Assistant notifications) | internal only | `wa-bridge` | `ghcr.io/raulpetruta/ha-wa-bridge:sha-385122d` | Docker volume `wa-bridge` |
 
 Per-service details:
 
 - **Home Assistant** uses the host network, so it can discover devices on the LAN, and runs `--privileged`, which gives it access to host hardware. It listens on port 8123; the firewall blocks direct access, so use the nginx name. Defined in [`homelab/home-assistant.nix`](../modules/nixos/homelab/home-assistant.nix).
 - **Fava** runs my own `finance-tracker` image on the host network, on port 5000. The ledger files live in my home folder on the server. Defined in [`homelab/fava.nix`](../modules/nixos/homelab/fava.nix).
 - **Omeka S** runs with the `default` and `freedom` themes and the Common, EasyAdmin, Adminer and CustomOntology modules. It, MariaDB and phpMyAdmin share a private Docker network, `omeka-net`; only Omeka's web port (`127.0.0.1:8081`) and phpMyAdmin's (`127.0.0.1:8080`) are published, both on localhost only. Its database and admin passwords come from sops, rendered into `/run/secrets/rendered/omeka-{db,app}.env`. Defined in [`homelab/omeka.nix`](../modules/nixos/homelab/omeka.nix).
+- **WhatsApp bridge** is a WhatsApp Web client logged in as a linked device, used by the `wa_bridge` integration in Home Assistant at `ws://127.0.0.1:3000`. Its API token and allowed numbers come from sops, under `wa_bridge:`. Defined in [`homelab/wa-bridge.nix`](../modules/nixos/homelab/wa-bridge.nix).
 - **phpMyAdmin** is not exposed through nginx. Reach it through an SSH tunnel:
 
   ```bash

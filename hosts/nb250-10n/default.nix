@@ -8,6 +8,7 @@
     ../../modules/nixos/homelab/home-assistant.nix
     ../../modules/nixos/homelab/fava.nix
     ../../modules/nixos/homelab/omeka.nix
+    ../../modules/nixos/homelab/wa-bridge.nix
   ];
 
   boot.loader.grub = {
