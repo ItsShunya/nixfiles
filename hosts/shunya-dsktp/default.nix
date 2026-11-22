@@ -13,6 +13,9 @@
     efi.canTouchEfiVariables = true;
   };
 
+  # Serial devices (/dev/ttyUSB*, /dev/ttyACM*) belong to the dialout group.
+  users.users.shunya.extraGroups = [ "dialout" ];
+
   # Login screen on the main monitor only. Appended to the greeter's niri
   # config from modules/nixos/niri.nix.
   environment.etc."greetd/niri.kdl".text = ''
