@@ -5,13 +5,14 @@
 
   sops.secrets = {
     "wa_bridge/api_token" = { };
-    "wa_bridge/allowed_numbers" = { };
+    # The group's exact name (not case-sensitive), for the "status" replies.
+    "wa_bridge/allowed_groups" = { };
   };
 
   sops.templates."wa-bridge.env" = {
     content = ''
       API_TOKEN=${config.sops.placeholder."wa_bridge/api_token"}
-      ALLOWED_NUMBERS=${config.sops.placeholder."wa_bridge/allowed_numbers"}
+      ALLOWED_GROUPS=${config.sops.placeholder."wa_bridge/allowed_groups"}
     '';
     restartUnits = [ "docker-wa-bridge.service" ];
   };
@@ -25,7 +26,8 @@
     volumes = [ "wa-bridge:/usr/src/app/.wwebjs_auth" ];
     environment = {
       TZ = "Europe/Paris";
-      INCOMING_MESSAGES_MODE = "numbers_only";
+      # Only messages from the ALLOWED_GROUPS group reach Home Assistant.
+      INCOMING_MESSAGES_MODE = "groups_only";
       INCOMING_MESSAGE_LOG_LEVEL = "COMPACT";
     };
     environmentFiles = [ config.sops.templates."wa-bridge.env".path ];
